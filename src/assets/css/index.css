@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --container-max1500: min(1500px, 100%);
+  --container-max1200: min(1200px, 100%);
+  --container-max1000: min(1000px, 100%);
+  --container-max2000: min(1100px, 100%);
+  --container-max300: min(300px, 100%);
+
+  
+}
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+.dark body{
+  @apply bg-black
+}
