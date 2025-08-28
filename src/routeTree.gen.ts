@@ -13,8 +13,18 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as _appRouteImport } from './routes/__app'
 import { Route as _appIndexRouteImport } from './routes/__app/index'
+import { Route as _appShopRouteImport } from './routes/__app/shop'
+import { Route as _appManageProductsRouteImport } from './routes/__app/manage-products'
 import { Route as _appAboutRouteImport } from './routes/__app/about'
 import { Route as _appProductsIndexRouteImport } from './routes/__app/products/index'
+import { Route as _appManageProductsIndexRouteImport } from './routes/__app/manage-products/index'
+import { Route as _appShopFilterRouteImport } from './routes/__app/shop/filter'
+import { Route as _appProductIdRouteImport } from './routes/__app/product/$id'
+import { Route as _appManageProductsAddRouteImport } from './routes/__app/manage-products/add'
+import { Route as _appProductIdReviewsRouteImport } from './routes/__app/product/$id/reviews'
+import { Route as _appProductIdRelatedProductsRouteImport } from './routes/__app/product/$id/related-products'
+import { Route as _appProductIdCreate_reviewRouteImport } from './routes/__app/product/$id/create_review'
+import { Route as _appManageProductsIdEditRouteImport } from './routes/__app/manage-products/$id.edit'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -35,6 +45,16 @@ const _appIndexRoute = _appIndexRouteImport.update({
   path: '/',
   getParentRoute: () => _appRoute,
 } as any)
+const _appShopRoute = _appShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appManageProductsRoute = _appManageProductsRouteImport.update({
+  id: '/manage-products',
+  path: '/manage-products',
+  getParentRoute: () => _appRoute,
+} as any)
 const _appAboutRoute = _appAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -45,20 +65,82 @@ const _appProductsIndexRoute = _appProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => _appRoute,
 } as any)
+const _appManageProductsIndexRoute = _appManageProductsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => _appManageProductsRoute,
+} as any)
+const _appShopFilterRoute = _appShopFilterRouteImport.update({
+  id: '/filter',
+  path: '/filter',
+  getParentRoute: () => _appShopRoute,
+} as any)
+const _appProductIdRoute = _appProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appManageProductsAddRoute = _appManageProductsAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => _appManageProductsRoute,
+} as any)
+const _appProductIdReviewsRoute = _appProductIdReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => _appProductIdRoute,
+} as any)
+const _appProductIdRelatedProductsRoute =
+  _appProductIdRelatedProductsRouteImport.update({
+    id: '/related-products',
+    path: '/related-products',
+    getParentRoute: () => _appProductIdRoute,
+  } as any)
+const _appProductIdCreate_reviewRoute =
+  _appProductIdCreate_reviewRouteImport.update({
+    id: '/create_review',
+    path: '/create_review',
+    getParentRoute: () => _appProductIdRoute,
+  } as any)
+const _appManageProductsIdEditRoute =
+  _appManageProductsIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => _appManageProductsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
+  '/manage-products': typeof _appManageProductsRouteWithChildren
+  '/shop': typeof _appShopRouteWithChildren
   '/': typeof _appIndexRoute
+  '/manage-products/add': typeof _appManageProductsAddRoute
+  '/product/$id': typeof _appProductIdRouteWithChildren
+  '/shop/filter': typeof _appShopFilterRoute
+  '/manage-products/': typeof _appManageProductsIndexRoute
   '/products': typeof _appProductsIndexRoute
+  '/manage-products/$id/edit': typeof _appManageProductsIdEditRoute
+  '/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
+  '/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
+  '/product/$id/reviews': typeof _appProductIdReviewsRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
+  '/shop': typeof _appShopRouteWithChildren
   '/': typeof _appIndexRoute
+  '/manage-products/add': typeof _appManageProductsAddRoute
+  '/product/$id': typeof _appProductIdRouteWithChildren
+  '/shop/filter': typeof _appShopFilterRoute
+  '/manage-products': typeof _appManageProductsIndexRoute
   '/products': typeof _appProductsIndexRoute
+  '/manage-products/$id/edit': typeof _appManageProductsIdEditRoute
+  '/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
+  '/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
+  '/product/$id/reviews': typeof _appProductIdReviewsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,22 +148,71 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/__app/about': typeof _appAboutRoute
+  '/__app/manage-products': typeof _appManageProductsRouteWithChildren
+  '/__app/shop': typeof _appShopRouteWithChildren
   '/__app/': typeof _appIndexRoute
+  '/__app/manage-products/add': typeof _appManageProductsAddRoute
+  '/__app/product/$id': typeof _appProductIdRouteWithChildren
+  '/__app/shop/filter': typeof _appShopFilterRoute
+  '/__app/manage-products/': typeof _appManageProductsIndexRoute
   '/__app/products/': typeof _appProductsIndexRoute
+  '/__app/manage-products/$id/edit': typeof _appManageProductsIdEditRoute
+  '/__app/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
+  '/__app/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
+  '/__app/product/$id/reviews': typeof _appProductIdReviewsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/signup' | '/about' | '/' | '/products'
+  fullPaths:
+    | '/login'
+    | '/signup'
+    | '/about'
+    | '/manage-products'
+    | '/shop'
+    | '/'
+    | '/manage-products/add'
+    | '/product/$id'
+    | '/shop/filter'
+    | '/manage-products/'
+    | '/products'
+    | '/manage-products/$id/edit'
+    | '/product/$id/create_review'
+    | '/product/$id/related-products'
+    | '/product/$id/reviews'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/about' | '/' | '/products'
+  to:
+    | '/login'
+    | '/signup'
+    | '/about'
+    | '/shop'
+    | '/'
+    | '/manage-products/add'
+    | '/product/$id'
+    | '/shop/filter'
+    | '/manage-products'
+    | '/products'
+    | '/manage-products/$id/edit'
+    | '/product/$id/create_review'
+    | '/product/$id/related-products'
+    | '/product/$id/reviews'
   id:
     | '__root__'
     | '/__app'
     | '/login'
     | '/signup'
     | '/__app/about'
+    | '/__app/manage-products'
+    | '/__app/shop'
     | '/__app/'
+    | '/__app/manage-products/add'
+    | '/__app/product/$id'
+    | '/__app/shop/filter'
+    | '/__app/manage-products/'
     | '/__app/products/'
+    | '/__app/manage-products/$id/edit'
+    | '/__app/product/$id/create_review'
+    | '/__app/product/$id/related-products'
+    | '/__app/product/$id/reviews'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -120,6 +251,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof _appIndexRouteImport
       parentRoute: typeof _appRoute
     }
+    '/__app/shop': {
+      id: '/__app/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof _appShopRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/manage-products': {
+      id: '/__app/manage-products'
+      path: '/manage-products'
+      fullPath: '/manage-products'
+      preLoaderRoute: typeof _appManageProductsRouteImport
+      parentRoute: typeof _appRoute
+    }
     '/__app/about': {
       id: '/__app/about'
       path: '/about'
@@ -134,18 +279,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof _appProductsIndexRouteImport
       parentRoute: typeof _appRoute
     }
+    '/__app/manage-products/': {
+      id: '/__app/manage-products/'
+      path: '/'
+      fullPath: '/manage-products/'
+      preLoaderRoute: typeof _appManageProductsIndexRouteImport
+      parentRoute: typeof _appManageProductsRoute
+    }
+    '/__app/shop/filter': {
+      id: '/__app/shop/filter'
+      path: '/filter'
+      fullPath: '/shop/filter'
+      preLoaderRoute: typeof _appShopFilterRouteImport
+      parentRoute: typeof _appShopRoute
+    }
+    '/__app/product/$id': {
+      id: '/__app/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof _appProductIdRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/manage-products/add': {
+      id: '/__app/manage-products/add'
+      path: '/add'
+      fullPath: '/manage-products/add'
+      preLoaderRoute: typeof _appManageProductsAddRouteImport
+      parentRoute: typeof _appManageProductsRoute
+    }
+    '/__app/product/$id/reviews': {
+      id: '/__app/product/$id/reviews'
+      path: '/reviews'
+      fullPath: '/product/$id/reviews'
+      preLoaderRoute: typeof _appProductIdReviewsRouteImport
+      parentRoute: typeof _appProductIdRoute
+    }
+    '/__app/product/$id/related-products': {
+      id: '/__app/product/$id/related-products'
+      path: '/related-products'
+      fullPath: '/product/$id/related-products'
+      preLoaderRoute: typeof _appProductIdRelatedProductsRouteImport
+      parentRoute: typeof _appProductIdRoute
+    }
+    '/__app/product/$id/create_review': {
+      id: '/__app/product/$id/create_review'
+      path: '/create_review'
+      fullPath: '/product/$id/create_review'
+      preLoaderRoute: typeof _appProductIdCreate_reviewRouteImport
+      parentRoute: typeof _appProductIdRoute
+    }
+    '/__app/manage-products/$id/edit': {
+      id: '/__app/manage-products/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/manage-products/$id/edit'
+      preLoaderRoute: typeof _appManageProductsIdEditRouteImport
+      parentRoute: typeof _appManageProductsRoute
+    }
   }
 }
 
+interface _appManageProductsRouteChildren {
+  _appManageProductsAddRoute: typeof _appManageProductsAddRoute
+  _appManageProductsIndexRoute: typeof _appManageProductsIndexRoute
+  _appManageProductsIdEditRoute: typeof _appManageProductsIdEditRoute
+}
+
+const _appManageProductsRouteChildren: _appManageProductsRouteChildren = {
+  _appManageProductsAddRoute: _appManageProductsAddRoute,
+  _appManageProductsIndexRoute: _appManageProductsIndexRoute,
+  _appManageProductsIdEditRoute: _appManageProductsIdEditRoute,
+}
+
+const _appManageProductsRouteWithChildren =
+  _appManageProductsRoute._addFileChildren(_appManageProductsRouteChildren)
+
+interface _appShopRouteChildren {
+  _appShopFilterRoute: typeof _appShopFilterRoute
+}
+
+const _appShopRouteChildren: _appShopRouteChildren = {
+  _appShopFilterRoute: _appShopFilterRoute,
+}
+
+const _appShopRouteWithChildren = _appShopRoute._addFileChildren(
+  _appShopRouteChildren,
+)
+
+interface _appProductIdRouteChildren {
+  _appProductIdCreate_reviewRoute: typeof _appProductIdCreate_reviewRoute
+  _appProductIdRelatedProductsRoute: typeof _appProductIdRelatedProductsRoute
+  _appProductIdReviewsRoute: typeof _appProductIdReviewsRoute
+}
+
+const _appProductIdRouteChildren: _appProductIdRouteChildren = {
+  _appProductIdCreate_reviewRoute: _appProductIdCreate_reviewRoute,
+  _appProductIdRelatedProductsRoute: _appProductIdRelatedProductsRoute,
+  _appProductIdReviewsRoute: _appProductIdReviewsRoute,
+}
+
+const _appProductIdRouteWithChildren = _appProductIdRoute._addFileChildren(
+  _appProductIdRouteChildren,
+)
+
 interface _appRouteChildren {
   _appAboutRoute: typeof _appAboutRoute
+  _appManageProductsRoute: typeof _appManageProductsRouteWithChildren
+  _appShopRoute: typeof _appShopRouteWithChildren
   _appIndexRoute: typeof _appIndexRoute
+  _appProductIdRoute: typeof _appProductIdRouteWithChildren
   _appProductsIndexRoute: typeof _appProductsIndexRoute
 }
 
 const _appRouteChildren: _appRouteChildren = {
   _appAboutRoute: _appAboutRoute,
+  _appManageProductsRoute: _appManageProductsRouteWithChildren,
+  _appShopRoute: _appShopRouteWithChildren,
   _appIndexRoute: _appIndexRoute,
+  _appProductIdRoute: _appProductIdRouteWithChildren,
   _appProductsIndexRoute: _appProductsIndexRoute,
 }
 
