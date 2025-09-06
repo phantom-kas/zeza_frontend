@@ -13,6 +13,7 @@
   --container-max200: min(200px, 100%);
 
   --color-white1: #f1f1f1;
+  --color-blue: #01589A;
 
   --color-white2: #e5e5ef;
   --color-white3: #7f7e83;
@@ -63,4 +64,12 @@
 .dark .ql-editor.ql-blank::before {
   /* color: red !important; */
   @apply text-white3;
+}
+
+.btnicon1 {
+  @apply w-6 h-6 flex justify-center items-center dark:bg-neutral-900 rounded-full dark:text-white;
+}
+
+.ha {
+  @apply hover:bg-gray-100 dark:hover:bg-gray-800;
 }

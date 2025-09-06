@@ -14,6 +14,7 @@ type Props = {
   required?: boolean;
   data?: Record<string, any> & { validate?: boolean };
   name: string;
+  className?:string
   options?: Option[];
   onInput?: (payload: { name: string; value: string }) => void;
 };
@@ -21,6 +22,7 @@ type Props = {
 export const SelectInput: React.FC<Props> = ({
   label = "Label",
   placeholder = "",
+  className='',
   val = null,
   required = false,
   data,
@@ -66,7 +68,7 @@ export const SelectInput: React.FC<Props> = ({
   };
 
   return (
-    <label className="flex flex-col items-start justify-start relative w-full">
+    <label className={"flex flex-col items-start justify-start relative w-full "+className}>
       <span className={isInvalid ? "text-red-500" : ""}>{label}</span>
       {msg && (
         <span className="text-xs leading-3 text-red-500 text-right w-full mb-1">
@@ -85,13 +87,13 @@ export const SelectInput: React.FC<Props> = ({
           value={value}
           onChange={handleChange}
           required={required}
-          className="theme1cont grow h-full px-2 rounded-lg bg-white text-gray-700 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+          className="theme1cont grow h-full px-2 rounded-lg not-dark:bg-lightblue theme1cont text-gray-700 focus:ring-blue-500 focus:border-blue-500 appearance-none"
         >
-          <option disabled value="">
+          <option disabled value="" className=" dark:bg-black dark:text-white2">
             -- {placeholder || "Select an option"} --
           </option>
           {options.map((option, i) => (
-            <option key={i} value={option.value}>
+            <option className="dark:bg-black dark:text-white2" key={i} value={option.value}>
               {option.label}
             </option>
           ))}

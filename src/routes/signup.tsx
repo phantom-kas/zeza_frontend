@@ -1,6 +1,7 @@
 // src/routes/signup.tsx
 import { createFileRoute } from '@tanstack/react-router'
+import Register from '../components/authentication/register'
 
 export const Route = createFileRoute('/signup')({
-  component: () => <h1>Signup Page</h1>,
+  component: () => <Register/>,
 })

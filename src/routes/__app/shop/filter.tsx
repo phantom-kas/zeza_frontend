@@ -19,11 +19,14 @@ function Filters() {
   const [showCategories, setShowCategories] = useState(true)
   const [loadstate, setloadstate] = useState(true)
 
+  useEffect(() => {
+    document.getElementById('filtermenu')?.scrollIntoView()
+  })
 
   const brands = ["Nike", "Adidas", "Puma", "Reebok"]
   const categories = ['Laptops', 'Phone', 'Camera', 'Watches'];
   return (
-    <div className=" w-max200  sticky top-15 flex flex-col justify-start">
+    <div id='filtermenu' className=" sm:w-max200 w-full  sm:sticky sm:top-15 flex flex-col justify-start z-90 not-dark:bg-white dark:bg-black pb-20 sm:pb-0">
       <Dropdown
         options={[
           { label: "Price", emit: "del" },
@@ -35,17 +38,16 @@ function Filters() {
       />
 
 
-      <div className=' w-full'>
-        <div className='flex justify-between items-center w-full py-2 text-lg font-[600]'>Product Categories <button title='s' type='button' onClick={() => setShowCategories(!showCategories)}>{showCategories ? <ChevronDownIcon /> : <ChevronUpIcon />}</button></div>
+      <div className=' w-full' >
+        <button onClick={() => setShowCategories(!showCategories)} className='flex  justify-between items-center w-full py-2 text-lg font-[600]'>Product Categories <button title='s' type='button' className=' btnicon1 ha'>{showCategories ? <ChevronDownIcon size={19} /> : <ChevronUpIcon size={19} />}</button></button>
         <div className={`flex flex-col gap-1 ${!showCategories && ' hidden'}`}>
-
           {categories.map(e => <span>{e}</span>)}
         </div>
       </div>
       <div className=' w-full border-b not-dark:border-neutral-200 dark:border-neutral-700  my-6'></div>
 
-      <div className=' w-full'>
-        <div className='flex justify-between items-center w-full pb-3 text-lg font-[600]'>Brand <button title='s' type='button' onClick={() => setShowbrandsState(!showbrandsState)}>{showbrandsState ? <ChevronDownIcon /> : <ChevronUpIcon />}</button></div>
+      <button className=' w-full' onClick={() => setShowbrandsState(!showbrandsState)}>
+        <div className='flex justify-between items-center w-full pb-3 text-lg font-[600]'>Brand <button className=' btnicon1 ha' title='s' type='button' >{showbrandsState ? <ChevronDownIcon size={19} /> : <ChevronUpIcon size={19} />}</button></div>
         <BrandFilter
           className={`${!showbrandsState && ' hidden'}`}
           brands={brands}
@@ -54,7 +56,7 @@ function Filters() {
             console.log("Updated brand objects:", updated)
           }}
         />
-      </div>
+      </button>
       <div className=' w-full border-b not-dark:border-neutral-200 dark:border-neutral-700  my-6'></div>
 
       <ValidatedInput type='number' name={'amt'} label='Price' />

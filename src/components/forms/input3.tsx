@@ -17,7 +17,7 @@ type InputProps = {
   onInput?: (payload: { name: string; value: string }) => void;
 };
 
-export default function InputField({
+export default function InputField3({
   label = "Label",
   type = "text",
   placeholder = "",
@@ -66,12 +66,8 @@ export default function InputField({
   };
 
   return (
-    <div className={"relative theme1cont flex items-center pl-2 gap-x-3 not-dark:bg-[#F5F5F5]! "+className}>
-      {icon ? (
-       icon
-      ) : (
-        <span className="w-5 h-5" />
-      )}
+    <div className={"relative theme1cont flex items-center gap-x-3 not-dark:bg-[#F5F5F5]! "+className}>
+    
 
       <input
         ref={inputRef}
@@ -83,7 +79,7 @@ export default function InputField({
         required={required}
         disabled={disabled}
         onChange={handleChange}
-        className="peer w-full px-4 pt-5 pb-2 pl-3 rounded text-sm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue focus:border-blue"
+        className="peer w-full px-4 pt-5 pb-2  rounded text-sm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue focus:border-blue"
       />
 
       {type === "password" && (
@@ -101,7 +97,7 @@ export default function InputField({
 
       <label
         htmlFor={`floating_${name}`}
-        className="absolute left-11 top-0 pointer-events-none text-sm transition-all 
+        className="absolute left-3 top-0 pointer-events-none text-sm transition-all 
         peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
         peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-500"
         dangerouslySetInnerHTML={{ __html: label }}
