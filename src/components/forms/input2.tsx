@@ -12,8 +12,9 @@ type InputProps = {
   data?: Record<string, any>;
   name: string;
   icon?: React.ReactNode;
-  className?:string
+  className?: string
   disabled?: boolean;
+  showErrors?: boolean;
   onInput?: (payload: { name: string; value: string }) => void;
 };
 
@@ -21,6 +22,7 @@ export default function InputField({
   label = "Label",
   type = "text",
   placeholder = "",
+  showErrors= false,
   val = null,
   required = false,
   data,
@@ -43,11 +45,11 @@ export default function InputField({
   useEffect(() => {
     // run initial validity check
     if (inputRef.current) {
-      checkValid(value);
+      checkValid();
     }
   }, []);
 
-  const checkValid = (val: string) => {
+  const checkValid = () => {
     if (!inputRef.current) return;
     if (!inputRef.current.checkValidity()) {
       setMsg(inputRef.current.validationMessage);
@@ -61,14 +63,14 @@ export default function InputField({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
     setValue(newVal);
-    checkValid(newVal);
+    checkValid();
     onInput?.({ name, value: newVal });
   };
 
   return (
-    <div className={"relative theme1cont flex items-center pl-2 gap-x-3 not-dark:bg-[#F5F5F5]! "+className}>
+    <div className={"relative theme1cont flex items-center pl-2 gap-x-3 not-dark:bg-[#F5F5F5]! " + className}>
       {icon ? (
-       icon
+        icon
       ) : (
         <span className="w-5 h-5" />
       )}
@@ -107,7 +109,7 @@ export default function InputField({
         dangerouslySetInnerHTML={{ __html: label }}
       />
 
-      {isInvalid && msg && (
+      {isInvalid && msg && showErrors && (
         <p className="absolute -bottom-5 left-0 text-red-500 text-xs">{msg}</p>
       )}
     </div>

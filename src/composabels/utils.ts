@@ -1,3 +1,4 @@
+import axios from "../lib/axios";
 
 export function anyCurrency(
   v: number | string,
@@ -21,4 +22,18 @@ export function anyCurrency(
     n = 0
   }
   return currenys + ` ${n.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+}
+
+export function isDev(): boolean {
+  return process.env.NODE_ENV === "development"
+}
+
+export const getImageUrl = (name: string) => {
+  if (!name) return '';
+  if (isDev() && !name.includes('http')) {
+    const base = new URL(axios.defaults.baseURL as string).origin
+    return base + name
+  }
+  console.log('img == ',name)
+  return name
 }

@@ -83,4 +83,4 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   )
 }
 
-export default QuillEditor
+ export default React.memo(QuillEditor)

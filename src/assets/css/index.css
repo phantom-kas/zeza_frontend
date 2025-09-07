@@ -45,7 +45,7 @@
   @apply dark:text-white1 dark:bg-black!;
 }
 .dark .ql-picker-options {
-  @apply dark:border-gray-600 dark:border text-white1 bg-black;
+  @apply dark:border-neutral-900 dark:border text-white1 bg-black;
 }
 
 .ql-editor {
@@ -54,7 +54,7 @@
 
 .ql-container.ql-snow,
 .ql-toolbar.ql-snow {
-  @apply border-none;
+  @apply dark:border-neutral-900!;
 }
 
 .dark .ql-toolbar.ql-snow {
@@ -72,4 +72,21 @@
 
 .ha {
   @apply hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+
+.toast.success {
+  background-color: rgb(63, 172, 63);
+}
+
+.toast.error {
+  background-color: rgb(234, 36, 36);
+}
+
+.toast.warning {
+  background-color: #ef9400c4;
+}
+
+.toast.info {
+  background-color: rgb(77, 77, 242);
 }

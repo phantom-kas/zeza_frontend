@@ -1,44 +1,64 @@
-import { create } from 'zustand'
-import axios from 'axios'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import axios from "../lib/axios";
+import { useToastStore } from "./toast";
 
 interface User {
-  id: string
-  name: string
+  id: string;
+  name: string;
+  image:string,
+  email:string
 }
 
 interface AuthState {
-  user: User | null
-  login: (credentials: { email: string; password: string }) => Promise<void>
-  logout: () => void
+  user: User | null;
+  token: string | null;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
+  logout: () => void;
+  setToken: (token: string|null) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
 
-  // ✅ Async login with Axios
-  login: async (credentials) => {
-    try {
-      const res = await axios.post('/api/login', credentials)
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      setToken: (token) => set({ token }),
+      login: async (credentials) => {
+        const res = await axios.post("/login", credentials, {
+          _showAllMessages: true,
+          _noRefresh: true,
+        });
 
-      // Example: backend returns { user, token }
-      const { user, token } = res.data
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        console.log(res);
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-      // Save token (e.g., in localStorage)
-      localStorage.setItem('token', token)
+        if (res.data.status !== "success") {
+          // alerts.addToast("Error", "error", "s");
+          return;
+        }
 
-      // Update Zustand state
-      set({ user })
-    } catch (err: any) {
-      console.error('Login failed:', err.response?.data || err.message)
-      throw err // so the component can handle it
+        const { user, access_token } = res.data.data;
+
+        // Save token in localStorage (manual)
+
+        set({ token: access_token });
+
+        // Update Zustand state (persist will also save this `user` to localStorage)
+        set({ user });
+      },
+
+      logout: () => {
+        set({ token: null });
+
+        set({ user: null });
+      },
+    }),
+    {
+      name: "auth-storage",
+      partialize: (state) => ({ user: state.user, token: state.token }),
     }
-  },
-
-  logout: () => {
-    // Clear token
-    localStorage.removeItem('token')
-
-    // Clear user
-    set({ user: null })
-  },
-}))
+  )
+);

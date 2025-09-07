@@ -60,7 +60,7 @@ const SelectField3: React.FC<SelectFieldProps> = ({
   };
 
   return (
-    <div className={"relative  flex items-center  gap-x-3 not-darkmode:bg-[#F5F5F5] theme1cont "+className}>
+    <div className={"relative  flex items-center  gap-x-3 not-dark:bg-[#F5F5F5]! theme1cont "+className}>
     
 
       <select

@@ -7,6 +7,7 @@ import { BlueButton } from '../../../components/ButtonBlue'
 import { UploadIcon } from 'lucide-react'
 import InputField3 from '../../../components/forms/input3'
 import SelectField3 from '../../../components/forms/select3'
+import QuillEditor from '../../../components/forms/quill-editor'
 
 export const Route = createFileRoute('/__app/manage-products/add')({
   component: RouteComponent,
@@ -17,7 +18,7 @@ function RouteComponent() {
   return <><form className=' w-full gap-6 flex flex-col pt-10 pb-20'>
     {/* <ImageCropper /> */}
     <div className=' flex w-full items-center justify-center p-4'>
-      <BlueButton label={'Upload Images'} icon={<UploadIcon />} />
+      <BlueButton onClick={() => setIsOpen(true)} type='button' label={'Upload Images'} icon={<UploadIcon />} />
     </div>
 
     <div className="w-full flex sm:flex-row gap-6 flex-col">
@@ -39,11 +40,12 @@ function RouteComponent() {
       ]} />
     </div>
 
-  
+    <QuillEditor placeholder='Description' />
+
 
     <BlueButton label={'Submit'} className=' w-max300' />
 
-  </form><FullscreenOverlay className=' bg-black p-3 theme1cont' isOpen={isOpen} onClose={() => setIsOpen(false)}>
+  </form><FullscreenOverlay className=' bg-black p-3 theme1cont w-max1000' isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <ImageCropper />
     </FullscreenOverlay></>
 }

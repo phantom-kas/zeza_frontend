@@ -2,16 +2,49 @@
 import { createFileRoute, Outlet, Link, useRouterState } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import Logo from '../components/logo'
-import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig } from 'lucide-react'
+import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon } from 'lucide-react'
 import { ThemeToggle } from '../components/toggleThem'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Footer from '../components/footer'
 import Login from '../components/authentication/login'
 import Register from '../components/authentication/register'
 import ForgotPassword from '../components/authentication/forgot-password'
+import { useAuthStore } from '../store/auth'
+import { useLoaderStore } from '../store/loader'
+import axios from '../lib/axios'
+import { Dropdown } from '../components/dopDown'
+import Avatar from '../components/avatar/avatarWithImage'
+import { getImageUrl } from '../composabels/utils'
 const TopNav = () => {
-  const routerState = useRouterState();
+  const { user, setToken, token } = useAuthStore();
+  const loader = useLoaderStore()
+  useEffect(() => {
+    let ran = false;
+    const checkAuth = async () => {
+      if (ran) return; // 🚫 skip second run
+      ran = true;
+      if (!user) {
+        // user is not logged in
 
+        return;
+      }
+      try {
+        loader.start2()
+        const res = await axios.get("check_token");
+        if (res.data.status !== "success") {
+          // clear access token if invalid
+          setToken(null)
+        }
+      } catch (err) {
+        console.error("Error checking token:", err);
+      } finally {
+        loader.stop2()
+      }
+    };
+    checkAuth();
+  }, [user]); // run when user changes
+
+  const routerState = useRouterState();
   const [open, setOpen] = useState(false);
   console.log(Route)
   return <> <nav className={` top-0 shadow-sm flex items-center justify-center  dark:bg-neutral-950 dark:text-white   z-100 bg-white fixed lg:w-full w-max300 ${open ? ' ' : ' max-lg:w-full '}`} >
@@ -27,13 +60,46 @@ const TopNav = () => {
         <NavItem to="/shop" label="Shop" icon={<Store size={16} />} />
         <NavItem to="/" label="Cart" icon={<ShoppingCart size={16} />} />
         <NavItem to="/" label="Favourite" icon={<Heart size={16} />} />
-        <NavItem to="/manage-products" label="Manage Products" icon={<TableConfig size={16} />} />
-        <NavItem to="/" label="Manage Users" icon={<UserRoundCog size={16} />} />
+
+
+        {!(!token || !user) && <> <Dropdown dropClasses=' theme1cont' mainIcon={
+          <NavItem to={null} label="Manage" icon={<Settings size={16} />} />
+        } options={
+          [
+            { label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/profile' },
+            { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
+            { label: 'Manage Categories', icon: <Boxes size={15} /> },
+            { label: 'Manage Brands', icon: <Octagon size={15} />,isLink: true, link: '/manage-brands'  },
+          ]
+        } />
+
+
+          <Dropdown dropClasses=' theme1cont' mainIcon={
+            <NavItem to={null} label="Add" icon={<PlusIcon size={16} />} />
+          } options={
+            [
+              { label: 'Add User', icon: <UserPlus2 size={16} />, isLink: true, link: '/profile' },
+              { label: 'Add Product', icon: <PackagePlus size={16} />, },
+              { label: 'Add Category', icon: <Boxes size={15} /> },
+              { label: 'Add Brand', icon: <Octagon size={15} /> ,isLink: true, link: '/manage-brands/add' },
+            ]
+          } />
+        </>
+        }
       </div>
       <div className={` flex   lg:items-center lg:justify-start gap-x-1 lg:flex-row flex-col items-start justify-start max-lg:w-full px-2 lg:px-0 mt-auto lg:mt-0  ${open ? 'flex ' : ' max-lg:hidden'}`}>
         <ThemeToggle />
-        <NavItem to={routerState.location.pathname + "?modal=login"} label="Login" icon={<LogIn size={16} />} />
-        <NavItem to={routerState.location.pathname + "?modal=signup"} label="Register" icon={<User size={16} />} />
+        {(!token || !user) ? (
+          <><NavItem to={routerState.location.pathname + "?modal=login"} label="Login" icon={<LogIn size={16} />} /><NavItem to={routerState.location.pathname + "?modal=signup"} label="Register" icon={<User size={16} />} /></>) :
+          <Dropdown dropClasses=' theme1cont' mainIcon={
+            <NavItem to={null} label={user.name} icon={<Avatar url={getImageUrl(user.image)} />} />
+          } options={
+            [
+              { label: 'Profile', icon: <User size={15} />, isLink: true, link: '/profile' },
+              { label: 'logout', icon: <LogOutIcon size={15} /> },
+            ]
+          } />
+        }
       </div>
     </div>
   </nav>
@@ -50,9 +116,18 @@ export const Route = createFileRoute('/__app')({
       </main>
       {<ModelComponent />}
       <Footer />
+      <Splash />
     </>
   ),
 })
+
+const Splash = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const loader = useLoaderStore()
+  return loader.isLoading2() && <div className=' dark:text-white2  dark:bg-black not-dark:bg-white2 w-dvw h-dvh fixed top-0 left-0 z-[999999] flex flex-col justify-center items-center'>
+    <Hourglass className='animate-spin' size={60} />
+  </div>
+}
 
 function ModelComponent() {
   // Tell useSearch which route to read from
@@ -72,19 +147,18 @@ function ModelComponent() {
       return <Register />;
     case 'forgot-password':
       return <ForgotPassword />;
-
   }
 }
 interface NavItemProps {
-  to: string
+  to: string | null
   label: string
   icon?: ReactNode
 }
 export function NavItem({ to, label, icon }: NavItemProps) {
   return (
-    <Link
-      to={to}
-      className="flex text-sm items-center lg:gap-1 gap-4 px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 max-lg:w-full"
+    <Link disabled={to == null}
+      to={to as string}
+      className="flex text-sm items-center lg:gap-1 gap-4 px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 max-lg:w-full cursor-pointer"
     >
       {icon && <span>{icon}</span>}
       <span>{label}</span>

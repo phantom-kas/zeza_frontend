@@ -1,7 +1,7 @@
 import { type ReactNode } from "react"
 import FullscreenOverlay from "../FullscreenOverlay"
 import { useNavigate, useRouterState } from '@tanstack/react-router'
-import { X, XIcon } from "lucide-react"
+import {  XIcon } from "lucide-react"
 // eslint-disable-next-line react-refresh/only-export-components
 export default ({ children = <span></span>,title='' }: {title:string, children: ReactNode }) => {
   const navigate = useNavigate()

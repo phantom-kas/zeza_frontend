@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { EllipsisVertical } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 interface Option {
   icon?: React.ReactNode;
-  emit: string;
+  emit?: string;
   label: string;
+  isLink?:boolean;
+  link?:string;
   hide?: boolean;
 }
 
@@ -12,9 +15,10 @@ interface DropdownProps {
   options: Option[];
   mainIcon?: React.ReactNode;
   onAction?: (emit: string) => void;
+  dropClasses?:string
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ options, onAction,mainIcon }) => {
+export const Dropdown: React.FC<DropdownProps> = ({dropClasses, options, onAction,mainIcon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPositionClass, setDropdownPositionClass] = useState(
     "top-full mt-2 left-0"
@@ -86,20 +90,27 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, onAction,mainIcon }
       <div
         ref={dropdownRef}
         className={`absolute z-50 w-40 text-xs shadow-lg rounded dark:text-white dark:bg-neutral-950 bg-white cursor-pointer transition-opacity duration-200 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-          } ${dropdownPositionClass}`}
+          } ${dropdownPositionClass} ${dropClasses}`}
       >
         <ul className="w-full flex flex-col items-center py-1 gap-y-0">
           {options.map(
             (op, i) =>
               !op.hide && (
-                <button
+               !op.isLink? <button
                   key={i}
-                  onClick={() => onAction?.(op.emit)}
+                  onClick={() =>op.emit && onAction?.(op.emit)}
                   className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
                 >
                   {op.icon?op.icon:''}
                   <span className="text-xs">{op.label}</span>
-                </button>
+                </button>:
+                <Link to={op.link}
+                  key={i}
+                  className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
+                >
+                  {op.icon?op.icon:''}
+                  <span className="text-xs">{op.label}</span>
+                </Link>
               )
           )}
         </ul>
