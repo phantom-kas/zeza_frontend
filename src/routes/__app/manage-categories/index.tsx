@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import InfiniteLoad from '../../../components/list/infiniteLoad';
 import { Pencil, Trash2 } from 'lucide-react';
 
-export const Route = createFileRoute('/__app/manage-brands/')({
+export const Route = createFileRoute('/__app/manage-categories/')({
   component: RouteComponent,
 })
 
@@ -15,7 +15,7 @@ function RouteComponent() {
       { titleLabel: 'Name', valueKey: 'name' },
       { titleLabel: 'Number Of Products', valueKey: 'num_products' },
       { titleLabel: 'Created At', valueKey: 'created_at' },
-    ]} className='w-full' is='table' qKey={'brands'} url='/brands'
+    ]} className='w-full' is='table' qKey={'categories'} url='/categories'
     />
   </div>
 }

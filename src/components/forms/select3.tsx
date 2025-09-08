@@ -13,7 +13,8 @@ interface SelectFieldProps {
   data?: Record<string, any>;
   name: string;
   options: Option[];
-  className?:string
+  className?: string
+  onInputed?: (payload: { name: string; value: string }) => void;
 }
 
 const SelectField3: React.FC<SelectFieldProps> = ({
@@ -23,8 +24,9 @@ const SelectField3: React.FC<SelectFieldProps> = ({
   required = false,
   data,
   name,
-  className='',
+  className = '',
   options,
+  onInputed
 }) => {
   const [vData, setVData] = useState<Record<string, any>>(data ?? {});
   const [value, setValue] = useState<string | number | "">(val ?? "");
@@ -57,11 +59,13 @@ const SelectField3: React.FC<SelectFieldProps> = ({
     const newValue = e.target.value;
     setValue(newValue);
     setVData((prev) => ({ ...prev, [name]: newValue }));
+
+    onInputed?.({ name, value: newValue });
   };
 
   return (
-    <div className={"relative  flex items-center  gap-x-3 not-dark:bg-[#F5F5F5]! theme1cont "+className}>
-    
+    <div className={"relative  flex items-center  gap-x-3 not-dark:bg-[#F5F5F5]! theme1cont " + className}>
+
 
       <select
         id={name}
@@ -83,7 +87,7 @@ const SelectField3: React.FC<SelectFieldProps> = ({
 
       <label
         htmlFor={name}
-        className={`absolute left-3 text-sm transition-all
+        className={`absolute left-3 text-sm transition-all pointer-events-none
           ${!value ? "top-3.5 text-gray-400" : "top-0"}
           peer-placeholder-shown:text-base 
           peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-500`}

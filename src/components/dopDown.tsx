@@ -15,10 +15,12 @@ interface DropdownProps {
   options: Option[];
   mainIcon?: React.ReactNode;
   onAction?: (emit: string) => void;
-  dropClasses?: string
+  dropClasses?: string,
+  className?:string
+
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, options, onAction, mainIcon }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ dropClasses,className, options, onAction, mainIcon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPositionClass, setDropdownPositionClass] = useState(
     "top-full mt-2 left-0"
@@ -85,7 +87,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, options, onActi
   }, []);
 
   return (
-    <div onClick={toggleDropdown} ref={triggerRef} className="relative inline-block">
+    <div onClick={toggleDropdown} ref={triggerRef} className={"relative inline-block "+className}>
       {mainIcon ?? <button title="drop" type="button"
         className="px-2 py-1 rounded-sm dark:hover:bg-neutral-800 hover:bg-gray-200 cursor-pointer dark:text-white"
       >

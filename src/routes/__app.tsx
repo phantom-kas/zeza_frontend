@@ -62,25 +62,25 @@ const TopNav = () => {
         <NavItem to="/" label="Favourite" icon={<Heart size={16} />} />
 
 
-        {!(!token || !user) && <> <Dropdown dropClasses=' theme1cont' mainIcon={
+        {!(!token || !user) && <> <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={
           <NavItem to={null} label="Manage" icon={<Settings size={16} />} />
         } options={
           [
             { label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/profile' },
             { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
-            { label: 'Manage Categories', icon: <Boxes size={15} /> },
+            { label: 'Manage Categories', icon: <Boxes size={15} /> ,isLink: true, link: '/manage-categories'},
             { label: 'Manage Brands', icon: <Octagon size={15} />,isLink: true, link: '/manage-brands'  },
           ]
         } />
 
 
-          <Dropdown dropClasses=' theme1cont' mainIcon={
+          <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={
             <NavItem to={null} label="Add" icon={<PlusIcon size={16} />} />
           } options={
             [
               { label: 'Add User', icon: <UserPlus2 size={16} />, isLink: true, link: '/profile' },
-              { label: 'Add Product', icon: <PackagePlus size={16} />, },
-              { label: 'Add Category', icon: <Boxes size={15} /> },
+              { label: 'Add Product', icon: <PackagePlus size={16} />,isLink: true, link: '/manage-products/add' },
+              { label: 'Add Category', icon: <Boxes size={15} />,isLink: true, link: '/manage-categories/add' },
               { label: 'Add Brand', icon: <Octagon size={15} /> ,isLink: true, link: '/manage-brands/add' },
             ]
           } />
@@ -91,7 +91,7 @@ const TopNav = () => {
         <ThemeToggle />
         {(!token || !user) ? (
           <><NavItem to={routerState.location.pathname + "?modal=login"} label="Login" icon={<LogIn size={16} />} /><NavItem to={routerState.location.pathname + "?modal=signup"} label="Register" icon={<User size={16} />} /></>) :
-          <Dropdown dropClasses=' theme1cont' mainIcon={
+          <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={
             <NavItem to={null} label={user.name} icon={<Avatar url={getImageUrl(user.image)} />} />
           } options={
             [
