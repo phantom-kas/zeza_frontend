@@ -5,6 +5,7 @@ import { routeTree } from './routeTree.gen'
 import './assets/css/index.css'
 import { useThemeStore } from './store/themestore'
 import List from './components/toast/list'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createRouter({ routeTree })
 
@@ -15,12 +16,15 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
+  <QueryClientProvider client={queryClient}>
     <List />
     <React.StrictMode>
       <RouterProvider router={router} />
     </React.StrictMode>
+    </QueryClientProvider>
   </>
 )

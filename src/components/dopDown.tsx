@@ -6,8 +6,8 @@ interface Option {
   icon?: React.ReactNode;
   emit?: string;
   label: string;
-  isLink?:boolean;
-  link?:string;
+  isLink?: boolean;
+  link?: string;
   hide?: boolean;
 }
 
@@ -15,10 +15,10 @@ interface DropdownProps {
   options: Option[];
   mainIcon?: React.ReactNode;
   onAction?: (emit: string) => void;
-  dropClasses?:string
+  dropClasses?: string
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({dropClasses, options, onAction,mainIcon }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, options, onAction, mainIcon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPositionClass, setDropdownPositionClass] = useState(
     "top-full mt-2 left-0"
@@ -42,23 +42,25 @@ export const Dropdown: React.FC<DropdownProps> = ({dropClasses, options, onActio
     const dropdownRect = dropdownEl.getBoundingClientRect();
     const { innerHeight, innerWidth } = window;
 
-    const spaceRight = innerWidth - dropdownRect.left;
-    const spaceLeft = dropdownRect.right;
     const spaceBelow = innerHeight - triggerRect.bottom;
     const spaceAbove = triggerRect.top;
+    const spaceRight = innerWidth - triggerRect.left;
+    const spaceLeft = triggerRect.right;
 
     let position = "";
 
+    // vertical placement
     if (spaceBelow < dropdownRect.height && spaceAbove > dropdownRect.height) {
-      position = "bottom-full mb-2";
+      position = "bottom-full mb-2"; // place above
     } else {
-      position = "top-full mt-2";
+      position = "top-full mt-2"; // place below
     }
 
+    // horizontal placement
     if (spaceRight < dropdownRect.width && spaceLeft > dropdownRect.width) {
-      position += " right-0";
+      position += " right-0"; // align right
     } else {
-      position += " left-0";
+      position += " left-0"; // align left
     }
 
     setDropdownPositionClass(position);
@@ -75,6 +77,9 @@ export const Dropdown: React.FC<DropdownProps> = ({dropClasses, options, onActio
         setIsOpen(false);
       }
     };
+    requestAnimationFrame(() => {
+      adjustDropdownPosition();
+    });
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
@@ -96,21 +101,21 @@ export const Dropdown: React.FC<DropdownProps> = ({dropClasses, options, onActio
           {options.map(
             (op, i) =>
               !op.hide && (
-               !op.isLink? <button
+                !op.isLink ? <button
                   key={i}
-                  onClick={() =>op.emit && onAction?.(op.emit)}
+                  onClick={() => op.emit && onAction?.(op.emit)}
                   className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
                 >
-                  {op.icon?op.icon:''}
+                  {op.icon ? op.icon : ''}
                   <span className="text-xs">{op.label}</span>
-                </button>:
-                <Link to={op.link}
-                  key={i}
-                  className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
-                >
-                  {op.icon?op.icon:''}
-                  <span className="text-xs">{op.label}</span>
-                </Link>
+                </button> :
+                  <Link to={op.link}
+                    key={i}
+                    className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
+                  >
+                    {op.icon ? op.icon : ''}
+                    <span className="text-xs">{op.label}</span>
+                  </Link>
               )
           )}
         </ul>
