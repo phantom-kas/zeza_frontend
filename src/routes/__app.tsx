@@ -33,9 +33,16 @@ const TopNav = () => {
         const res = await axios.get("check_token");
         if (res.data.status !== "success") {
           // clear access token if invalid
+          // window.alert('notkn')
           setToken(null)
         }
+
+        // window.alert('notkn1')
+
       } catch (err) {
+        // window.alert('notkn2')
+        setToken(null)
+
         console.error("Error checking token:", err);
       } finally {
         loader.stop2()
@@ -68,8 +75,8 @@ const TopNav = () => {
           [
             { label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/profile' },
             { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
-            { label: 'Manage Categories', icon: <Boxes size={15} /> ,isLink: true, link: '/manage-categories'},
-            { label: 'Manage Brands', icon: <Octagon size={15} />,isLink: true, link: '/manage-brands'  },
+            { label: 'Manage Categories', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories' },
+            { label: 'Manage Brands', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands' },
           ]
         } />
 
@@ -79,9 +86,9 @@ const TopNav = () => {
           } options={
             [
               { label: 'Add User', icon: <UserPlus2 size={16} />, isLink: true, link: '/profile' },
-              { label: 'Add Product', icon: <PackagePlus size={16} />,isLink: true, link: '/manage-products/add' },
-              { label: 'Add Category', icon: <Boxes size={15} />,isLink: true, link: '/manage-categories/add' },
-              { label: 'Add Brand', icon: <Octagon size={15} /> ,isLink: true, link: '/manage-brands/add' },
+              { label: 'Add Product', icon: <PackagePlus size={16} />, isLink: true, link: '/manage-products/add' },
+              { label: 'Add Category', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories/add' },
+              { label: 'Add Brand', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands/add' },
             ]
           } />
         </>

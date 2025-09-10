@@ -34,11 +34,8 @@ axios.interceptors.request.use((req) => {
   req.withCredentials = true;
 
   // const user = useAuthStore.getState();
-  const token = useAuthStore.getState().token
-  if (
-    token != undefined &&
-    token != ""
-  ) {
+  const token = useAuthStore.getState().token;
+  if (token != undefined && token != "") {
     req.headers.Authorization = "Bearer " + token;
   } else {
     req.headers.Authorization = "";
@@ -129,8 +126,8 @@ axios.interceptors.response.use(
         );
 
         if (error.response.data.errors) {
-          // window.alert('op') 
-          for (let key in  error.response.data.errors) {
+          // window.alert('op')
+          for (let key in error.response.data.errors) {
             error.response.data.errors[key].forEach((el) => {
               alerts.addToast(el, "error");
             });
@@ -161,7 +158,7 @@ axios.interceptors.response.use(
       const data = {
         refreshToken: null,
       };
-      url = "generate_new_access_token";
+      url = "refresh";
       return axios({
         url,
         method: "POST",
@@ -173,7 +170,11 @@ axios.interceptors.response.use(
         })
         .then((res) => {
           // localStorage.setItem("token", res.data.data.accessToken);
-          user.setToken(res.data.data.accessToken)
+          if (res.data.status != "success") {
+            user.setToken(null);
+            return
+          }
+          user.setToken(res.data.data.accessToken);
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + res.data.data.accessToken;
           originalRequest.headers.Authorization =
