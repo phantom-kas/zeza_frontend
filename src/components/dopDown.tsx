@@ -16,11 +16,11 @@ interface DropdownProps {
   mainIcon?: React.ReactNode;
   onAction?: (emit: string) => void;
   dropClasses?: string,
-  className?:string
+  className?: string
 
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ dropClasses,className, options, onAction, mainIcon }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, className, options, onAction, mainIcon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPositionClass, setDropdownPositionClass] = useState(
     "top-full mt-2 left-0"
@@ -61,10 +61,16 @@ export const Dropdown: React.FC<DropdownProps> = ({ dropClasses,className, optio
     // horizontal placement
     if (spaceRight < dropdownRect.width && spaceLeft > dropdownRect.width) {
       position += " right-0"; // align right
+      console.log('open left')
     } else {
+      console.log('open right')
+
       position += " left-0"; // align left
     }
 
+    console.log('space right', spaceRight);
+    console.log('space left', spaceLeft);
+    console.log('width', dropdownRect.width);
     setDropdownPositionClass(position);
   };
 
@@ -87,7 +93,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ dropClasses,className, optio
   }, []);
 
   return (
-    <div onClick={toggleDropdown} ref={triggerRef} className={"relative inline-block "+className}>
+    <div onClick={toggleDropdown} ref={triggerRef} className={"relative inline-block " + className}>
       {mainIcon ?? <button title="drop" type="button"
         className="px-2 py-1 rounded-sm dark:hover:bg-neutral-800 hover:bg-gray-200 cursor-pointer dark:text-white"
       >

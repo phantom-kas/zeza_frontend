@@ -3,25 +3,26 @@ import type React from "react";
 
 export const BlueButton = ({
   icon,
-  label,
+  label='',
   loading,
   type,
   onClick,
   className,
+  children=undefined
 }: {
   loading?: boolean;
   icon?: React.ReactNode;
-  label: string;
+  label?: string;
   type?: HTMLButtonElement["type"],
   className?: string,
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  children?:React.ReactNode
 }) => {
   return (
     <button disabled={loading?true:false} onClick={onClick} type={type} className={" cursor-pointer items-center gap-2 px-4 py-2 rounded-lg dark:bg-gray-900 dark:hover:bg-gray-800 not-dark:bg-blue text-white hover:bg-blue-700 flex justify-center " + className}>
       {loading ? (
         <Loader className="animate-spin w-6 h-6 mx-auto" />
-      ) : (
-        <>
+      ) : (!children && <>
           {icon && <span>{icon}</span>}
           <span className=" text-center mx-auto">{label}</span>
         </>

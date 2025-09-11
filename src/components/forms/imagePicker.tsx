@@ -163,13 +163,13 @@ export const ImageCropper: React.FC<Props> = ({
     const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas();
     canvas.toBlob((blob) => {
       if (blob && onCrop) onCrop({ img: blob, index });
-    }, 'image/jpeg');
+    }, 'image/png');
   };
 
   const handlePreview = async () => {
     if (!selectionRef.current) return;
     const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas();
-    setFinalImg(canvas.toDataURL('image/jpeg'));
+    setFinalImg(canvas.toDataURL('image/png'));
     setPreviewOpen(true);
   };
 

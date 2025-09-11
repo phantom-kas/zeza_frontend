@@ -19,7 +19,7 @@ type ListProps = {
 };
 // eslint-disable-next-line react-refresh/only-export-components
 export default ({ className, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
-  const fetchProjects = async ({ pageParam }) => {
+  const fetchProjects = async ({ pageParam }:{pageParam:number|string}) => {
     const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params } })
     console.log(res.data.data)
     return res.data.data

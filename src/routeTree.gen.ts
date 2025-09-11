@@ -27,6 +27,7 @@ import { Route as _appProductIdRouteImport } from './routes/__app/product/$id'
 import { Route as _appManageProductsAddRouteImport } from './routes/__app/manage-products/add'
 import { Route as _appManageCategoriesAddRouteImport } from './routes/__app/manage-categories/add'
 import { Route as _appManageBrandsAddRouteImport } from './routes/__app/manage-brands/add'
+import { Route as _appProductEditMediaIdRouteImport } from './routes/__app/product.edit-media.$id'
 import { Route as _appProductIdReviewsRouteImport } from './routes/__app/product/$id/reviews'
 import { Route as _appProductIdRelatedProductsRouteImport } from './routes/__app/product/$id/related-products'
 import { Route as _appProductIdCreate_reviewRouteImport } from './routes/__app/product/$id/create_review'
@@ -124,6 +125,11 @@ const _appManageBrandsAddRoute = _appManageBrandsAddRouteImport.update({
   path: '/add',
   getParentRoute: () => _appManageBrandsRoute,
 } as any)
+const _appProductEditMediaIdRoute = _appProductEditMediaIdRouteImport.update({
+  id: '/product/edit-media/$id',
+  path: '/product/edit-media/$id',
+  getParentRoute: () => _appRoute,
+} as any)
 const _appProductIdReviewsRoute = _appProductIdReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
   '/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
   '/product/$id/reviews': typeof _appProductIdReviewsRoute
+  '/product/edit-media/$id': typeof _appProductEditMediaIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -205,6 +212,7 @@ export interface FileRoutesByTo {
   '/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
   '/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
   '/product/$id/reviews': typeof _appProductIdReviewsRoute
+  '/product/edit-media/$id': typeof _appProductEditMediaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/__app/product/$id/create_review': typeof _appProductIdCreate_reviewRoute
   '/__app/product/$id/related-products': typeof _appProductIdRelatedProductsRoute
   '/__app/product/$id/reviews': typeof _appProductIdReviewsRoute
+  '/__app/product/edit-media/$id': typeof _appProductEditMediaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -259,6 +268,7 @@ export interface FileRouteTypes {
     | '/product/$id/create_review'
     | '/product/$id/related-products'
     | '/product/$id/reviews'
+    | '/product/edit-media/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -281,6 +291,7 @@ export interface FileRouteTypes {
     | '/product/$id/create_review'
     | '/product/$id/related-products'
     | '/product/$id/reviews'
+    | '/product/edit-media/$id'
   id:
     | '__root__'
     | '/__app'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/__app/product/$id/create_review'
     | '/__app/product/$id/related-products'
     | '/__app/product/$id/reviews'
+    | '/__app/product/edit-media/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -443,6 +455,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof _appManageBrandsAddRouteImport
       parentRoute: typeof _appManageBrandsRoute
     }
+    '/__app/product/edit-media/$id': {
+      id: '/__app/product/edit-media/$id'
+      path: '/product/edit-media/$id'
+      fullPath: '/product/edit-media/$id'
+      preLoaderRoute: typeof _appProductEditMediaIdRouteImport
+      parentRoute: typeof _appRoute
+    }
     '/__app/product/$id/reviews': {
       id: '/__app/product/$id/reviews'
       path: '/reviews'
@@ -570,6 +589,7 @@ interface _appRouteChildren {
   _appIndexRoute: typeof _appIndexRoute
   _appProductIdRoute: typeof _appProductIdRouteWithChildren
   _appProductsIndexRoute: typeof _appProductsIndexRoute
+  _appProductEditMediaIdRoute: typeof _appProductEditMediaIdRoute
 }
 
 const _appRouteChildren: _appRouteChildren = {
@@ -581,6 +601,7 @@ const _appRouteChildren: _appRouteChildren = {
   _appIndexRoute: _appIndexRoute,
   _appProductIdRoute: _appProductIdRouteWithChildren,
   _appProductsIndexRoute: _appProductsIndexRoute,
+  _appProductEditMediaIdRoute: _appProductEditMediaIdRoute,
 }
 
 const _appRouteWithChildren = _appRoute._addFileChildren(_appRouteChildren)

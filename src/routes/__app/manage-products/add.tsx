@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ImageCropper } from '../../../components/forms/imagePicker'
-import { SelectInput } from '../../../components/forms/selectInput'
 import FullscreenOverlay from '../../../components/FullscreenOverlay'
 import { useState } from 'react'
 import { BlueButton } from '../../../components/ButtonBlue'
@@ -42,7 +41,7 @@ function RouteComponent() {
   const handelUpload =async (e) => {
     e.preventDefault()
     setIsLoading(true)
-    await axios.post('/poduct/add', {...form, brand, category, description, media: cropperImage.img }, {
+    await axios.post('/product/add', {...form, brand, category, description, media: cropperImage.img }, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
