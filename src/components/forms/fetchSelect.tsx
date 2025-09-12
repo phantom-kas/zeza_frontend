@@ -12,7 +12,8 @@ type ListProps = {
   labelKey?: string,
   keyName?: string,
   params?: { [key: string]: string | number }
-  string?: string
+  string?: string,
+  val?:string,
   label: string
   renderItem?: (items) => React.ReactNode;
   dropDownOptions?: { [key: string]: unknown }[],
@@ -20,7 +21,7 @@ type ListProps = {
   onChange?: (payload: { name: string; value: string }) => void;
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export default ({ label, loadClassName = '', className = '', onChange, url, name, keyName = 'id', renderItem, labelKey = 'name', qKey = 'todos', params }: ListProps) => {
+export default ({val=undefined, label, loadClassName = '', className = '', onChange, url, name, keyName = 'id', renderItem, labelKey = 'name', qKey = 'todos', params }: ListProps) => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: [qKey],
     queryFn: async () => {
@@ -51,5 +52,5 @@ export default ({ label, loadClassName = '', className = '', onChange, url, name
 
 
 
-  return renderItem ? renderItem(data) : <SelectField3 label={label} className={className} onInputed={handleChange} name={name} options={data} />
+  return renderItem ? renderItem(data) : <SelectField3 val={val} label={label} className={className} onInputed={handleChange} name={name} options={data} />
 }

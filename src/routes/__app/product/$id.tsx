@@ -1,20 +1,40 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import ProductDetails from '../../../components/productCard2'
+import axios from '../../../lib/axios'
+import { useQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/__app/product/$id')({
   component: RouteComponent,
 })
 function RouteComponent() {
   const { id } = Route.useParams()
+  
 
+  const qFn = (id: string | number) => {
+    return axios.get(`/product/${id}`).then((res) => {
+    
+      return res.data.data
+    })
+  }
+  const { isPending, error, data } = useQuery({
+    queryKey: [`/product/${id}`],
+    queryFn: async () => {
+      let m = await qFn(id)
+      // console.log(m);
+      return m
+    }
+  })
+
+
+  if (isPending) { return 'loading' }
   return <div className='  w-max1200 mx-auto py-20 flex flex-col lg:flex-row px-6 min-h-dvh gap-x-10 items-start relative gap-y-10'>
 
     <ProductDetails className=' w-max500 shrink-0 relative lg:sticky lg:top-15' product={{
-      name: 'Phone',
-      description: 'RAM 16.0 GB | Memory 512 GB Keyboard layout Eng (English) ',
-      price: 0,
+      name: data.product.name,
+      description: data.product.description,
+      price: data.product.price,
       new: undefined,
-      image: '/src/assets/images/phone.png'
+      media: data.media
     }} />
 
     <div className='flex flex-col w-full '>

@@ -28,7 +28,7 @@ export const ProduCardAdmin = ({ onRestore = () => { }, status, id, created_at, 
     <div className=" text-xs  items-center justify-start flex w-full">{created_at}</div>
 
     <div className="flex justify-end gap-3 w-full">
-      <ToolTip onClick={e => handleOverlayClick(e, () => navigate({ to: '/manage-products/add' }))} className="flex justify-center items-center p-2 theme1cont not-dark:bg-white" TooltipContent={'Edit Product'}>
+      <ToolTip onClick={e => handleOverlayClick(e, () => navigate({ to: '/product/edit/'+id }))} className="flex justify-center items-center p-2 theme1cont not-dark:bg-white" TooltipContent={'Edit Product'}>
         <Pencil size={17} />
       </ToolTip>
       {status != 'deleted' ? <ToolTip onClick={(e) => handleOverlayClick(e, () => onDelete(id))} className="flex justify-center items-center p-2 theme1cont not-dark:bg-white" TooltipContent={'Delete Product'}>

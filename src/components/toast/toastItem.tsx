@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Check, InfoIcon, TriangleAlertIcon, XIcon } from "lucide-react"
+import { Check, InfoIcon, TriangleAlertIcon, XCircleIcon, XIcon } from "lucide-react"
 
 
 export type ToastStatus = "success" | "error" | "warning" | "info"
@@ -33,7 +33,7 @@ export default function ToastItem({
         ? <TriangleAlertIcon />
         : status === "success"
           ? <Check />
-          : <XIcon />
+          : <XCircleIcon />
 
   return (
     <div

@@ -18,6 +18,7 @@
     "@tanstack/router-devtools": "^1.131.27",
     "axios": "^1.11.0",
     "cropperjs": "^2.0.1",
+    "dompurify": "^3.2.6",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.541.0",
     "quill": "^2.0.3",
