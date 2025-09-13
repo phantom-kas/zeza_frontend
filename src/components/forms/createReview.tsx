@@ -4,11 +4,12 @@ import QuillEditor from "./quill-editor";
 import { BlueButton } from "../ButtonBlue";
 
 interface RatingFormProps {
-  onSubmit: (data: { rating: number; review: string }) => Promise<void> | void;
+  onSubmit: (data: { rating: number|string; review: string }) => void;
   onClose: () => void;
+  isLoading:boolean;
 }
 
-export default function RatingForm({ onSubmit }: RatingFormProps) {
+export default function RatingForm({ onSubmit ,isLoading=false }: RatingFormProps) {
   const [showRatingEdit, setShowRatingEdit] = useState(true);
   const [ratingData, setRatingData] = useState({
     rating: 0,
@@ -21,7 +22,7 @@ export default function RatingForm({ onSubmit }: RatingFormProps) {
     try {
       setRatingData((prev) => ({ ...prev, loading: true }));
       await onSubmit({
-        rating: ratingData.rating,
+        rating: ratingData.rating+'',
         review: ratingData.review,
       });
     } finally {
@@ -54,7 +55,7 @@ export default function RatingForm({ onSubmit }: RatingFormProps) {
         }
       />
 
-      <BlueButton loading={ratingData.loading} className="w-full " label="Submit" />
+      <BlueButton loading={isLoading} className="w-full " label="Submit" />
     </form>
   );
 }

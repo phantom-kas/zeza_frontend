@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import axios from "../lib/axios";
 import { useToastStore } from "./toast";
 
+
 interface User {
   id: string;
   name: string;

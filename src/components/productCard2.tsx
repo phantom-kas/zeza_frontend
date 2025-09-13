@@ -3,20 +3,38 @@ import { useCartStore } from "../store/cart";
 import { Adder } from "./adder";
 import { anyCurrency } from "../composabels/utils";
 import { BlueButton } from "./ButtonBlue";
-import SwiperList from "./swiperList";
 import DOMPurify from "dompurify"
 import SwiperList2 from "./swiperList2";
+import axios from "../lib/axios";
+
 type Product = {
   name: string;
   description: string;
   price: number;
   new?: boolean;
   media: any,
+  id: string | number
   // image: string; // adjust to your actual shape
 };
 
+
 export default function ProductDetails({ product, className }: { className?: string, product: Product }) {
-  const cart = useCartStore();
+  const [isLoading, setIsloading] = useState(false)
+  const handleAddToCart = async (e) => {
+    e.preventDefault()
+    setIsloading(true)
+    await axios.post('/cart/add-item', [{ product_id: product.id, quantity }], { _showAllMessages: true }).then(res => {
+      if (res.data.status != 'success') return
+
+      setItemsCount(res.data.data.total.totalUnits)
+      
+      // window.alert(res.data.data.totaldata.totalUnits)
+    }).catch(() => {
+      setIsloading(false)
+    })
+    setIsloading(false)
+  }
+  const { setItemsCount } = useCartStore();
   const [quantity, setQuantity] = useState(1);
 
   return (
@@ -32,9 +50,9 @@ export default function ProductDetails({ product, className }: { className?: str
           {product.name}
         </h3>
 
-        <span className="opacity-[50%] w-full sm:w-[70%]"  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}>
-       
-          
+        <span className="opacity-[50%] w-full sm:w-[70%]" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}>
+
+
         </span>
 
         <span
@@ -44,12 +62,13 @@ export default function ProductDetails({ product, className }: { className?: str
           }}
         />
 
-        <div className="flex  gap-4 px gap-y-5 flex-col w-full">
+        <form onSubmit={handleAddToCart} className="flex  gap-4 px gap-y-5 flex-col w-full">
           <Adder value={1} onChange={(e: number) => setQuantity(Number(e))} />
 
-          <BlueButton className=" w-full" label=" ADD TO CART" onClick={() => cart.increment(product, quantity)}>
+          <BlueButton loading={isLoading} className=" w-full" label=" ADD TO CART" >
+
           </BlueButton>
-        </div>
+        </form>
       </div>
 
       {/* <img alt="image"

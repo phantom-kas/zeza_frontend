@@ -8,6 +8,7 @@ interface Option {
   label: string;
   isLink?: boolean;
   link?: string;
+  search?:any;
   hide?: boolean;
 }
 
@@ -118,6 +119,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, className, opti
                   <span className="text-xs">{op.label}</span>
                 </button> :
                   <Link to={op.link}
+                  search={op.search}
                     key={i}
                     className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
                   >

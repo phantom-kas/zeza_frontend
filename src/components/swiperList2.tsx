@@ -67,8 +67,8 @@ export default ({ className = '', media }: swiperProps) => {
             return <SwiperSlide className=' w-[25%] h-full relative mt-1'>
               {item.type == 'image' ? <>  <img alt='' className=' m-auto ' src={getImageUrl(item.url)} />
               </> : <> <video className=' m-auto max-h-full max-w-full ' controls src={getImageUrl(item.url)} />
-                <div className=' w-full h-full flex items-center justify-center absolute top-0 left-0'>
-                  <PlayCircle />
+                <div className=' w-full h-full flex items-center justify-center absolute top-0 left-0 text-white theme2cont '>
+                  <PlayCircle className=' bg-black/30' />
                 </div>
               </>
               }

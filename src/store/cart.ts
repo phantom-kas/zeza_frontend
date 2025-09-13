@@ -17,37 +17,13 @@ type CartItem = {
 type CartStore = {
   items: CartItem[];
   itemsCount: number;
-  increment: (product: Product, quantity: number) => void;
+  setItems: (items: CartItem[]) => void;
+  setItemsCount: (count: number) => void;
 };
 
-export const useCartStore = create<CartStore>((set, get) => ({
+export const useCartStore = create<CartStore>((set) => ({
   items: [],
   itemsCount: 0,
-
-  increment: (product, quantity) => {
-    set((state) => {
-      // check if product already exists
-      const existingIndex = state.items.findIndex(
-        (item) => item.product.name === product.name
-      );
-
-      let newItems: CartItem[];
-      if (existingIndex >= 0) {
-        // update quantity
-        newItems = [...state.items];
-        newItems[existingIndex].quantity += quantity;
-      } else {
-        // add new product
-        newItems = [...state.items, { product, quantity }];
-      }
-
-      return {
-        items: newItems,
-        itemsCount: newItems.reduce(
-          (total, item) => total + item.quantity,
-          0
-        ),
-      };
-    });
-  },
+  setItems: (items: any) => set({ items }),
+  setItemsCount: (count: number) => set({ itemsCount: count }),
 }));

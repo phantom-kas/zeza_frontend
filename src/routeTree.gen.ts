@@ -17,6 +17,7 @@ import { Route as _appShopRouteImport } from './routes/__app/shop'
 import { Route as _appManageProductsRouteImport } from './routes/__app/manage-products'
 import { Route as _appManageCategoriesRouteImport } from './routes/__app/manage-categories'
 import { Route as _appManageBrandsRouteImport } from './routes/__app/manage-brands'
+import { Route as _appCartRouteImport } from './routes/__app/cart'
 import { Route as _appAboutRouteImport } from './routes/__app/about'
 import { Route as _appProductsIndexRouteImport } from './routes/__app/products/index'
 import { Route as _appManageProductsIndexRouteImport } from './routes/__app/manage-products/index'
@@ -73,6 +74,11 @@ const _appManageCategoriesRoute = _appManageCategoriesRouteImport.update({
 const _appManageBrandsRoute = _appManageBrandsRouteImport.update({
   id: '/manage-brands',
   path: '/manage-brands',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appCartRoute = _appCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
   getParentRoute: () => _appRoute,
 } as any)
 const _appAboutRoute = _appAboutRouteImport.update({
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
+  '/cart': typeof _appCartRoute
   '/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/manage-products': typeof _appManageProductsRouteWithChildren
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
+  '/cart': typeof _appCartRoute
   '/shop': typeof _appShopRouteWithChildren
   '/': typeof _appIndexRoute
   '/manage-brands/add': typeof _appManageBrandsAddRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/__app/about': typeof _appAboutRoute
+  '/__app/cart': typeof _appCartRoute
   '/__app/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/__app/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/__app/manage-products': typeof _appManageProductsRouteWithChildren
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/about'
+    | '/cart'
     | '/manage-brands'
     | '/manage-categories'
     | '/manage-products'
@@ -284,6 +294,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/about'
+    | '/cart'
     | '/shop'
     | '/'
     | '/manage-brands/add'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/__app/about'
+    | '/__app/cart'
     | '/__app/manage-brands'
     | '/__app/manage-categories'
     | '/__app/manage-products'
@@ -395,6 +407,13 @@ declare module '@tanstack/react-router' {
       path: '/manage-brands'
       fullPath: '/manage-brands'
       preLoaderRoute: typeof _appManageBrandsRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/cart': {
+      id: '/__app/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof _appCartRouteImport
       parentRoute: typeof _appRoute
     }
     '/__app/about': {
@@ -601,6 +620,7 @@ const _appProductIdRouteWithChildren = _appProductIdRoute._addFileChildren(
 
 interface _appRouteChildren {
   _appAboutRoute: typeof _appAboutRoute
+  _appCartRoute: typeof _appCartRoute
   _appManageBrandsRoute: typeof _appManageBrandsRouteWithChildren
   _appManageCategoriesRoute: typeof _appManageCategoriesRouteWithChildren
   _appManageProductsRoute: typeof _appManageProductsRouteWithChildren
@@ -614,6 +634,7 @@ interface _appRouteChildren {
 
 const _appRouteChildren: _appRouteChildren = {
   _appAboutRoute: _appAboutRoute,
+  _appCartRoute: _appCartRoute,
   _appManageBrandsRoute: _appManageBrandsRouteWithChildren,
   _appManageCategoriesRoute: _appManageCategoriesRouteWithChildren,
   _appManageProductsRoute: _appManageProductsRouteWithChildren,

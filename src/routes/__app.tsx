@@ -15,40 +15,52 @@ import axios from '../lib/axios'
 import { Dropdown } from '../components/dopDown'
 import Avatar from '../components/avatar/avatarWithImage'
 import { getImageUrl } from '../composabels/utils'
+import { useQuery } from '@tanstack/react-query'
+import { useCartStore } from '../store/cart'
 const TopNav = () => {
+  const { itemsCount, setItemsCount } = useCartStore();
   const { user, setToken, token } = useAuthStore();
   const loader = useLoaderStore()
+
+  useQuery({
+    queryKey: ['cart'],
+    queryFn: async () =>
+      await axios.get('/cart').then(res => {
+        if (res.data.status != 'success') return
+        setItemsCount(res.data.data.total.totalUnits)
+        return res.data.data
+      }),
+    enabled: !!user,
+  })
+
+  let ran = false;
   useEffect(() => {
-    let ran = false;
+    if (ran) return;
     const checkAuth = async () => {
-      if (ran) return; // 🚫 skip second run
       ran = true;
       if (!user) {
-        // user is not logged in
-
+        setToken(null)
         return;
       }
       try {
         loader.start2()
         const res = await axios.get("check_token");
         if (res.data.status !== "success") {
-          // clear access token if invalid
-          // window.alert('notkn')
           setToken(null)
+          console.log('error check tkn')
+          return
         }
-
-        // window.alert('notkn1')
-
+        console.warn('getting cart -----------------')
       } catch (err) {
-        // window.alert('notkn2')
         setToken(null)
-
         console.error("Error checking token:", err);
       } finally {
         loader.stop2()
       }
     };
     checkAuth();
+
+
   }, [user]); // run when user changes
 
   const routerState = useRouterState();
@@ -65,7 +77,7 @@ const TopNav = () => {
       <div className={`' flex lg:items-center lg:justify-start gap-x-1 lg:flex-row flex-col items-start justify-start px-2 lg:px-0 max-lg:w-full lg:mt-0 mt-3 ${open ? 'flex ' : ' max-lg:hidden'}`}>
         <NavItem to="/" label="Home" icon={<HomeIcon size={16} />} />
         <NavItem to="/shop" label="Shop" icon={<Store size={16} />} />
-        <NavItem to="/" label="Cart" icon={<ShoppingCart size={16} />} />
+        <NavItem className='relative ' to="/cart" label={itemsCount > 0 ? <> Cart <div className='flex justify-center items-center w-5 h-5 rounded-2xl absolute text-[11px] font-[600]  left-0 top-[0px] text-xs bg-amber-700 text-white'> {itemsCount}</div></> : 'Cart'} icon={<ShoppingCart size={16} />} />
         <NavItem to="/" label="Favourite" icon={<Heart size={16} />} />
 
 
@@ -113,10 +125,13 @@ const TopNav = () => {
     <div className={`lg:hidden h-screen w-screen top-0 left-0  z-[99] fixed bg-black opacity-25 ${open ? '  ' : ' hidden'}`} onClick={() => setOpen(!open)}></div>
   </>
 }
+
+
+
+
 export const Route = createFileRoute('/__app')({
   component: () => (
     <>
-
       <TopNav />
       <main className=' mx-auto w-full mt-12 not-dark:text-black dark:text-white'>
         <Outlet />
@@ -158,14 +173,15 @@ function ModelComponent() {
 }
 interface NavItemProps {
   to: string | null
-  label: string
-  icon?: ReactNode
+  label: React.ReactNode,
+  icon?: ReactNode,
+  className?: string
 }
-export function NavItem({ to, label, icon }: NavItemProps) {
+export function NavItem({ className = '', to, label, icon }: NavItemProps) {
   return (
     <Link disabled={to == null}
       to={to as string}
-      className="flex text-sm items-center lg:gap-1 gap-4 px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 max-lg:w-full cursor-pointer"
+      className={"flex text-sm items-center lg:gap-1 gap-4 px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 max-lg:w-full cursor-pointer " + className}
     >
       {icon && <span>{icon}</span>}
       <span>{label}</span>

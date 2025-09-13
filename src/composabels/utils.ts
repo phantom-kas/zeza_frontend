@@ -1,5 +1,6 @@
 import axios from "../lib/axios";
 
+let defaultCurrency = 'GHS'
 export function anyCurrency(
   v: number | string,
   rate: number = 1,
@@ -9,14 +10,14 @@ export function anyCurrency(
   // v= v/100
   rate = rate ?? 1
   if (v == null) {
-    return "$ 0.00";
+    return defaultCurrency+" 0.00";
   }
   v = v + ''
   let n = parseFloat(v) * rate;
   n = n / 100;
   n = parseFloat(n + '');
   if (!currenys) {
-    currenys = "$";
+    currenys = defaultCurrency;
   }
   if (isNaN(n)) {
     n = 0
@@ -37,3 +38,15 @@ export const getImageUrl = (name: string) => {
   console.log('img == ',name)
   return name
 }
+
+
+export function   debounce(cb:Function, delay: number) {
+  let timeOut: number;
+  return (...args: any) => {
+    clearTimeout(timeOut);
+    timeOut = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
+}
+

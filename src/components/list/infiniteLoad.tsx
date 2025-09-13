@@ -13,14 +13,15 @@ type ListProps = {
   is?: React.ElementType,
   url: string,
   perpage?: number,
-  params?: { [key: string]: string | number }
-  renderItem?: (item: T, index: number) => React.ReactNode;
+  params?: { [key: string]: string | number },
+  query?: { [key: string]: any },
+  renderItem?: <T>(item: T, index: number) => React.ReactNode;
   dropDownOptions?: { [key: string]: unknown }[]
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export default ({ className, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
-  const fetchProjects = async ({ pageParam }:{pageParam:number|string}) => {
-    const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params } })
+export default ({ className, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
+  const fetchProjects = async ({ pageParam }: { pageParam: number | string }) => {
+    const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params, ...query } })
     console.log(res.data.data)
     return res.data.data
   }
@@ -87,7 +88,7 @@ export default ({ className, dropDownOptions, Headeritems, renderItem, url, qKey
               : 'Nothing more to load'}
         </button>
       </div>
-      <div className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage ) && <LucideLoaderCircle className="animate-spin" size={28}/>}</div>
+      <div className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}</div>
     </>
   )
 }

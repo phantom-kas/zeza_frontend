@@ -17,16 +17,25 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
-  <QueryClientProvider client={queryClient}>
-    <List />
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
-    <ReactQueryDevtools initialIsOpen={false} />
+    <QueryClientProvider client={queryClient}>
+      <List />
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </>
 )

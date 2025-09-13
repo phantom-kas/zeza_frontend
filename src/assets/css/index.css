@@ -29,11 +29,11 @@
 }
 
 .theme1cont,.theme2cont {
-  @apply dark:border-neutral-900 dark:border;
+  @apply dark:ring-neutral-900 dark:ring;
 }
 
 .theme2cont {
-  @apply not-dark:border-neutral-300 border;
+  @apply not-dark:ring-neutral-300 ring;
 }
 
 .active1 {

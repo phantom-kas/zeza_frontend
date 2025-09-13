@@ -1,16 +1,28 @@
 import { createFileRoute } from '@tanstack/react-router'
 import RatingForm from '../../../../components/forms/createReview'
+import axios from '../../../../lib/axios'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/__app/product/$id/create_review')({
   component: RouteComponent,
 })
 
+
+
+
 function RouteComponent() {
   const { id } = Route.useParams()
+  const [isLoading, setIsloading] = useState(false)
+  const handelSubmit = async (data: any) => {
+    setIsloading(true)
+    await axios.post('create-review', { ...data , product_id:id }).then(res => {
+      if (res.data.status != 'success') return
+    }).catch(error => {
 
-  return <RatingForm onSubmit={function (data: { rating: number; review: string }): Promise<void> | void {
-    throw new Error('Function not implemented.')
-  } } onClose={function (): void {
-    throw new Error('Function not implemented.')
-  } }/>
+      setIsloading(false)
+    })
+    setIsloading(false)
+  }
+
+  return <RatingForm isLoading={isLoading} onSubmit={(data: { rating: number; review: string }) => handelSubmit(data)} onClose={() => { }} />
 }

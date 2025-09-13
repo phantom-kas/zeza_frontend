@@ -31,6 +31,7 @@ function RouteComponent() {
 
     <ProductDetails className=' w-max500 shrink-0 relative lg:sticky lg:top-15' product={{
       name: data.product.name,
+      id:data.product.id,
       description: data.product.description,
       price: data.product.price,
       new: undefined,
