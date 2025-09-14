@@ -79,8 +79,8 @@ function Filters() {
       <Dropdown
 
         options={[
-          { label: "Price highest to lowest", isLink: true, search: { ...search, sort: "price-asc" }, emit: "price-asc" },
-          { label: "Price lowest to highest ", isLink: true, search: { ...search, sort: "price-desc" }, emit: "price-desc" },
+          { label: "Price highest to lowest", isLink: true, search: { ...search, sort: "price-asc" }, emit: "price-desc" },
+          { label: "Price lowest to highest ", isLink: true, search: { ...search, sort: "price-desc" }, emit: "price-asc" },
           { label: "Rating", isLink: true, search: { ...search, sort: "rating" }, emit: "rating" },
         ]}
         mainIcon={<div className=' cursor-pointer font-[600] text-2xl'>Sort By</div>}

@@ -1,5 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { ArrowUpRight, ChevronRight } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import axios from 'axios'
+import { ArrowUpRight, ChevronRight, ImageIcon } from 'lucide-react'
+import SwiperList from '../../components/swiperList'
+import SwiperListAutoPlay from '../../components/swiperListAutoPlay'
 // import { Dropdown } from '../../components/dopDown'
 export const Route = createFileRoute('/__app/')({
   component: () =>
@@ -21,10 +25,9 @@ export const Route = createFileRoute('/__app/')({
       mainIcon={<Edit className=' dark:text-white' size={18} />}
       onAction={(emit) => console.log("Action:", emit)}
     /> */}
-            <button type="button" className=' text-black flex items-center gap-x-1 rounded-xl text-sm bg-white py-2 px-4 cursor-pointer z-10 relative'>
+            <Link to='/shop' type="button" className=' text-black flex items-center gap-x-1 rounded-xl text-sm bg-white py-2 px-4 cursor-pointer z-10 relative'>
               Shop Now <ChevronRight />
-
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -33,22 +36,39 @@ export const Route = createFileRoute('/__app/')({
         <h1 className=' font-[600] text-4xl mb-2' >Top Trending Products</h1>
         <span className=' font-[400] text-sm'>Discover the latest must-have items that are taking the market by storm. Stay ahead with our curated collection
           of trending products designed to elevate your lifestyle.</span>
-        <div className=' grid sm:grid-cols-3 lg:gap-30 gap-10 mt-10 grid-1'>
+        <Featured />
 
-          <ProductCard title1="Macbook" title2='Up to 50% off laptop' />
-          <ProductCard title1="Macbook" title2='Up to 50% off laptop' />
-          <ProductCard title1="Macbook" title2='Up to 50% off laptop' />
-        </div>
       </section>
     </>
 })
 
 
-const ProductCard: React.FC<{ title1: string, title2: string }> = ({ title1, title2 }) => {
-  return <div className='  flex items-start justify-start flex-col not-dark:bg-lightblue dark:border-lightblue dark:border dark:bg-lightblueDark py-4 px-4'>
+const ProductCard: React.FC<{id:string,media:string, title1: string, title2: string }> = ({id,media, title1, title2 }) => {
+  let mediaparsed = []
+  if (media) {
+    mediaparsed = JSON.parse(media)
+  }
+  return <Link to={'/product/'+id} className='  flex items-start justify-start flex-col not-dark:bg-lightblue  dark:bg-lightblueDark py-4 px-4 theme2cont'>
     <h1 className=' text-start text-2xl font-[400] '>{title1}</h1>
     <h2 className=' text-start text-sm'>{title2}</h2>
-    <img className=' w-full' src="/src/assets/images/phone.png" alt="" />
-    <div className=' w-full flex gap-1 hover:underline cursor-pointer'>Shop now <ArrowUpRight size={24}/></div>
+    {mediaparsed.length > 0? < SwiperListAutoPlay className={" w-full h-70"} media={mediaparsed} /> :<ImageIcon className={"w-full h-70"} />}
+    <div className=' w-full flex gap-1 hover:underline cursor-pointer'>Shop now <ArrowUpRight size={24} /></div>
+  </Link>
+}
+
+
+
+const Featured = () => {
+
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['/products/featrued'],
+    queryFn: async () => {
+      const res = await axios.get('/products/featrued')
+      return res.data.data
+    }
+  })
+  return <div className=' grid sm:grid-cols-3 lg:gap-30 gap-10 mt-10 grid-1 w-max1000'>
+    {data && data.map((p: any) => { return <ProductCard id={p.id} media={p.media} title1={p.name} title2='Up to 50% off laptop' /> })}
   </div>
 }
+

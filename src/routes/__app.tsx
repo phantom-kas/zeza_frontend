@@ -2,7 +2,7 @@
 import { createFileRoute, Outlet, Link, useRouterState } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import Logo from '../components/logo'
-import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon } from 'lucide-react'
+import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon, TruckIcon } from 'lucide-react'
 import { ThemeToggle } from '../components/toggleThem'
 import { useEffect, useState } from 'react'
 import Footer from '../components/footer'
@@ -79,6 +79,7 @@ const TopNav = () => {
         <NavItem to="/shop" label="Shop" icon={<Store size={16} />} />
         <NavItem className='relative ' to="/cart" label={itemsCount > 0 ? <> Cart <div className='flex justify-center items-center w-5 h-5 rounded-2xl absolute text-[11px] font-[600]  left-0 top-[0px] text-xs bg-amber-700 text-white'> {itemsCount}</div></> : 'Cart'} icon={<ShoppingCart size={16} />} />
         <NavItem to="/" label="Favourite" icon={<Heart size={16} />} />
+        <NavItem to="/orders" label="Orders" icon={<TruckIcon size={16} />} />
 
 
         {!(!token || !user) && <> <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={

@@ -6,6 +6,8 @@ import { BlueButton } from "./ButtonBlue";
 import DOMPurify from "dompurify"
 import SwiperList2 from "./swiperList2";
 import axios from "../lib/axios";
+import { ImageIcon } from "lucide-react";
+import Rating from "./rating";
 
 type Product = {
   name: string;
@@ -13,7 +15,9 @@ type Product = {
   price: number;
   new?: boolean;
   media: any,
+  review: string | number
   id: string | number
+  num_review: number
   // image: string; // adjust to your actual shape
 };
 
@@ -27,7 +31,7 @@ export default function ProductDetails({ product, className }: { className?: str
       if (res.data.status != 'success') return
 
       setItemsCount(res.data.data.total.totalUnits)
-      
+
       // window.alert(res.data.data.totaldata.totalUnits)
     }).catch(() => {
       setIsloading(false)
@@ -69,6 +73,8 @@ export default function ProductDetails({ product, className }: { className?: str
 
           </BlueButton>
         </form>
+
+        <div className=" flex items-end"><Rating rating={product.review} /><span className=" opacity-35 text-sm font-[600]">({product.num_review ?? 0})</span></div>
       </div>
 
       {/* <img alt="image"
@@ -76,7 +82,7 @@ export default function ProductDetails({ product, className }: { className?: str
         src={product.image}
       /> */}
       {/* <SwiperList className={" w-full sm:w-[50%] h-70"} media={product.media} /> */}
-      <SwiperList2 className={" w-full sm:w-[50%] h-100"} media={product.media} />
+      {product.media.length > 0 ? <SwiperList2 className={" w-full sm:w-[50%] h-100"} media={product.media} /> : <ImageIcon className={" w-full sm:w-[50%] h-100"} />}
 
 
     </div>

@@ -11,6 +11,8 @@
   --container-max600: min(600px, 100%);
   --container-max300: min(300px, 100%);
   --container-max200: min(200px, 100%);
+  --container-max100: min(100px, 100%);
+  --container-max150: min(150px, 100%);
 
   --color-white1: #f1f1f1;
   --color-blue: #01589A;
@@ -116,3 +118,29 @@
       left: calc(50% - 40px) !important;
     
   }
+
+
+
+
+  .rating {
+  unicode-bidi: bidi-override;
+  color: #ccc; /* empty star color */
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+}
+
+.rating::before {
+  content: "★★★★★"; /* background stars */
+}
+
+.rating::after {
+  content: "★★★★★"; /* filled stars */
+  color: gold;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc((var(--rating) / var(--max-stars)) * 100%);
+  overflow: hidden;
+  white-space: nowrap;
+}

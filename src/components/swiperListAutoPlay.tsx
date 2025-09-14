@@ -25,14 +25,14 @@ export default ({ className = '', media }: swiperProps) => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 5000,
+          delay: 2500,
           disableOnInteraction: false,
         }}
         pagination={{
           clickable: true,
         }}
         // navigation={true}
-        modules={[Pagination,Autoplay]}
+        modules={[Pagination,Autoplay,Navigation]}
         className={"mySwiper " + className}
       >
         {media.map((item) => {

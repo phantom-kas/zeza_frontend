@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as _appRouteImport } from './routes/__app'
 import { Route as _appIndexRouteImport } from './routes/__app/index'
 import { Route as _appShopRouteImport } from './routes/__app/shop'
+import { Route as _appOrdersRouteImport } from './routes/__app/orders'
 import { Route as _appManageProductsRouteImport } from './routes/__app/manage-products'
 import { Route as _appManageCategoriesRouteImport } from './routes/__app/manage-categories'
 import { Route as _appManageBrandsRouteImport } from './routes/__app/manage-brands'
@@ -59,6 +60,11 @@ const _appIndexRoute = _appIndexRouteImport.update({
 const _appShopRoute = _appShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appOrdersRoute = _appOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => _appRoute,
 } as any)
 const _appManageProductsRoute = _appManageProductsRouteImport.update({
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/manage-products': typeof _appManageProductsRouteWithChildren
+  '/orders': typeof _appOrdersRoute
   '/shop': typeof _appShopRouteWithChildren
   '/': typeof _appIndexRoute
   '/manage-brands/add': typeof _appManageBrandsAddRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
   '/cart': typeof _appCartRoute
+  '/orders': typeof _appOrdersRoute
   '/shop': typeof _appShopRouteWithChildren
   '/': typeof _appIndexRoute
   '/manage-brands/add': typeof _appManageBrandsAddRoute
@@ -240,6 +248,7 @@ export interface FileRoutesById {
   '/__app/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/__app/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/__app/manage-products': typeof _appManageProductsRouteWithChildren
+  '/__app/orders': typeof _appOrdersRoute
   '/__app/shop': typeof _appShopRouteWithChildren
   '/__app/': typeof _appIndexRoute
   '/__app/manage-brands/add': typeof _appManageBrandsAddRoute
@@ -270,6 +279,7 @@ export interface FileRouteTypes {
     | '/manage-brands'
     | '/manage-categories'
     | '/manage-products'
+    | '/orders'
     | '/shop'
     | '/'
     | '/manage-brands/add'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/about'
     | '/cart'
+    | '/orders'
     | '/shop'
     | '/'
     | '/manage-brands/add'
@@ -324,6 +335,7 @@ export interface FileRouteTypes {
     | '/__app/manage-brands'
     | '/__app/manage-categories'
     | '/__app/manage-products'
+    | '/__app/orders'
     | '/__app/shop'
     | '/__app/'
     | '/__app/manage-brands/add'
@@ -386,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof _appShopRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/orders': {
+      id: '/__app/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof _appOrdersRouteImport
       parentRoute: typeof _appRoute
     }
     '/__app/manage-products': {
@@ -624,6 +643,7 @@ interface _appRouteChildren {
   _appManageBrandsRoute: typeof _appManageBrandsRouteWithChildren
   _appManageCategoriesRoute: typeof _appManageCategoriesRouteWithChildren
   _appManageProductsRoute: typeof _appManageProductsRouteWithChildren
+  _appOrdersRoute: typeof _appOrdersRoute
   _appShopRoute: typeof _appShopRouteWithChildren
   _appIndexRoute: typeof _appIndexRoute
   _appProductIdRoute: typeof _appProductIdRouteWithChildren
@@ -638,6 +658,7 @@ const _appRouteChildren: _appRouteChildren = {
   _appManageBrandsRoute: _appManageBrandsRouteWithChildren,
   _appManageCategoriesRoute: _appManageCategoriesRouteWithChildren,
   _appManageProductsRoute: _appManageProductsRouteWithChildren,
+  _appOrdersRoute: _appOrdersRoute,
   _appShopRoute: _appShopRouteWithChildren,
   _appIndexRoute: _appIndexRoute,
   _appProductIdRoute: _appProductIdRouteWithChildren,

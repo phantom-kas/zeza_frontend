@@ -15,7 +15,7 @@ function RouteComponent() {
   const [isLoading, setIsloading] = useState(false)
   const handelSubmit = async (data: any) => {
     setIsloading(true)
-    await axios.post('create-review', { ...data , product_id:id }).then(res => {
+    await axios.post('create-review', { ...data , product_id:id },{_showAllMessages:true} ).then(res => {
       if (res.data.status != 'success') return
     }).catch(error => {
 

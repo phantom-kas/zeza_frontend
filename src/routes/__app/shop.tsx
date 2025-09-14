@@ -28,7 +28,7 @@ function RouteComponent() {
       <div className=" relative @container grow max-sm:w-full ">
         <InfiniteLoad key={JSON.stringify(search)} query={search} renderItem={(item) => {
           return <ProduCard1 to={'/product/' + item.id} product={item} className=" w-full @xs:w-max300" />
-        }} className='@container grow grid grid-1 @sm:grid-cols-3 @xs:grid-cols-2 w-full gap-4' is='div' qKey={'products'} url='/products'
+        }} className='@container grow grid grid-1 @sm:grid-cols-3 @xs:grid-cols-2 w-full gap-4' is='div' qKey={'products'+JSON.stringify(search)} url='/products'
         />
 
 

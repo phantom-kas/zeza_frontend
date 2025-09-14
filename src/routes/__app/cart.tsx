@@ -6,7 +6,8 @@ import axios from '../../lib/axios';
 import { anyCurrency, debounce } from '../../composabels/utils';
 import MediaImage from '../../components/mediaImage';
 import DOMPurify from "dompurify"
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import PaystackCheckout from '../../components/paystackPopUp';
 
 export const Route = createFileRoute('/__app/cart')({
     component: RouteComponent,
@@ -16,6 +17,7 @@ export const Route = createFileRoute('/__app/cart')({
 
 
 function RouteComponent() {
+    const [initPay, setInitPay] = useState(false)
     const queryClient = useQueryClient()
 
     const { setItemsCount } = useCartStore();
@@ -100,6 +102,7 @@ function RouteComponent() {
 
     if (error) return <div className=' mx-auto w-max1200 px-6 my-20'>An error has occurred:  + {error.message}</div>
 
+    if (initPay) return <PaystackCheckout />
     return <section className="bg-white py-8 antialiased dark:bg-black md:py-16">
         <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
             <h2 className="text-xl font-semibold text-neutral-900 dark:text-white sm:text-2xl">Shopping Cart</h2>
@@ -193,7 +196,7 @@ function RouteComponent() {
                             </dl>
                         </div>
 
-                        <a href="#" className=" bg-blue flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Checkout</a>
+                        <button className=" bg-blue flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={() => setInitPay(true)}>Proceed to Checkout</button>
 
                         {/* <div className="flex items-center justify-center gap-2">
                             <span className="text-sm font-normal text-neutral-500 dark:text-neutral-400"> or </span>

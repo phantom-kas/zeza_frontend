@@ -35,6 +35,8 @@ function RouteComponent() {
       description: data.product.description,
       price: data.product.price,
       new: undefined,
+      review:data.product.review,
+      num_review:data.product.num_review,
       media: data.media
     }} />
 

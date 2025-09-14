@@ -8,6 +8,7 @@ import { LucideLoaderCircle, Pencil, Trash2 } from "lucide-react";
 
 type ListProps = {
   Headeritems?: { titleLabel: string, valueKey: string }[];
+  showLoadMore?: boolean
   className?: string,
   qKey: string,
   is?: React.ElementType,
@@ -19,7 +20,7 @@ type ListProps = {
   dropDownOptions?: { [key: string]: unknown }[]
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export default ({ className, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
+export default ({ className, showLoadMore = true, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
   const fetchProjects = async ({ pageParam }: { pageParam: number | string }) => {
     const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params, ...query } })
     console.log(res.data.data)
@@ -77,7 +78,7 @@ export default ({ className, query, dropDownOptions, Headeritems, renderItem, ur
       ))}
     </Compnent>
       <div>
-        <button className=" w-full text-center opacity-40 p-4"
+        {showLoadMore && <button className=" w-full text-center opacity-40 p-4"
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetching}
         >
@@ -86,7 +87,7 @@ export default ({ className, query, dropDownOptions, Headeritems, renderItem, ur
             : hasNextPage
               ? 'Load More'
               : 'Nothing more to load'}
-        </button>
+        </button>}
       </div>
       <div className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}</div>
     </>
