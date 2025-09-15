@@ -3,12 +3,13 @@ export default function RatingSummary({
     ratingSumaryString,
     totalReviews,
     rating,
+    num_review
     
 }: {
     ratingSumaryString: string;
     totalReviews: number;
     rating:string|number;
-   
+   num_review:number
 }) {
     let reviewsParsed: Record<string, number> = {};
     try {
@@ -24,7 +25,7 @@ export default function RatingSummary({
             {[5, 4, 3, 2, 1].map((star) => {
                 const count = reviewsParsed[star] || 0;
                 const percent =
-                    totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+                    num_review > 0 ? Math.round((count / num_review) * 100) : 0;
 
                 return (
                     <div key={star} className="w-full flex gap-2 items-center">

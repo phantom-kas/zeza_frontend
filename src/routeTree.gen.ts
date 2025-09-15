@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as _appRouteImport } from './routes/__app'
 import { Route as _appIndexRouteImport } from './routes/__app/index'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as _appShopRouteImport } from './routes/__app/shop'
 import { Route as _appOrdersRouteImport } from './routes/__app/orders'
 import { Route as _appManageProductsRouteImport } from './routes/__app/manage-products'
@@ -56,6 +57,11 @@ const _appIndexRoute = _appIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => _appRoute,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const _appShopRoute = _appShopRouteImport.update({
   id: '/shop',
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/manage-products': typeof _appManageProductsRouteWithChildren
   '/orders': typeof _appOrdersRoute
   '/shop': typeof _appShopRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/': typeof _appIndexRoute
   '/manage-brands/add': typeof _appManageBrandsAddRoute
   '/manage-categories/add': typeof _appManageCategoriesAddRoute
@@ -219,6 +226,7 @@ export interface FileRoutesByTo {
   '/cart': typeof _appCartRoute
   '/orders': typeof _appOrdersRoute
   '/shop': typeof _appShopRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/': typeof _appIndexRoute
   '/manage-brands/add': typeof _appManageBrandsAddRoute
   '/manage-categories/add': typeof _appManageCategoriesAddRoute
@@ -250,6 +258,7 @@ export interface FileRoutesById {
   '/__app/manage-products': typeof _appManageProductsRouteWithChildren
   '/__app/orders': typeof _appOrdersRoute
   '/__app/shop': typeof _appShopRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/__app/': typeof _appIndexRoute
   '/__app/manage-brands/add': typeof _appManageBrandsAddRoute
   '/__app/manage-categories/add': typeof _appManageCategoriesAddRoute
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/manage-products'
     | '/orders'
     | '/shop'
+    | '/auth/callback'
     | '/'
     | '/manage-brands/add'
     | '/manage-categories/add'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/orders'
     | '/shop'
+    | '/auth/callback'
     | '/'
     | '/manage-brands/add'
     | '/manage-categories/add'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/__app/manage-products'
     | '/__app/orders'
     | '/__app/shop'
+    | '/auth/callback'
     | '/__app/'
     | '/__app/manage-brands/add'
     | '/__app/manage-categories/add'
@@ -361,6 +373,7 @@ export interface RootRouteChildren {
   _appRoute: typeof _appRouteWithChildren
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -392,6 +405,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof _appIndexRouteImport
       parentRoute: typeof _appRoute
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/__app/shop': {
       id: '/__app/shop'
@@ -673,6 +693,7 @@ const rootRouteChildren: RootRouteChildren = {
   _appRoute: _appRouteWithChildren,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

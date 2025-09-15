@@ -50,3 +50,35 @@ export function   debounce(cb:Function, delay: number) {
   };
 }
 
+
+export function timeAgo(input: string | Date): string {
+  const now = new Date();
+  const date = input instanceof Date ? input : new Date(input.replace(" ", "T")); // handle "YYYY-MM-DD HH:mm:ss"
+
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (isNaN(seconds)) return "Invalid date";
+
+  const intervals: [number, string][] = [
+    [60, "second"],
+    [60, "minute"],
+    [24, "hour"],
+    [7, "day"],
+    [4.345, "week"],
+    [12, "month"],
+    [Number.MAX_SAFE_INTEGER, "year"], // fallback
+  ];
+
+  let unit = "second";
+  let value = seconds;
+
+  for (let i = 0; i < intervals.length; i++) {
+    if (value < intervals[i][0]) break;
+    value = Math.floor(value / intervals[i][0]);
+    unit = intervals[i][1];
+  }
+
+  return value <= 1
+    ? `1 ${unit} ago`
+    : `${value} ${unit}s ago`;
+}

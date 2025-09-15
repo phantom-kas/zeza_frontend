@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "../lib/axios";
-import { useToastStore } from "./toast";
+// import { useToastStore } from "./toast";
 
 
 interface User {
   id: string;
   name: string;
-  image:string,
-  email:string
+  image: string,
+  email: string
 }
 
 interface AuthState {
@@ -16,7 +16,8 @@ interface AuthState {
   token: string | null;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   logout: () => void;
-  setToken: (token: string|null) => void;
+  setToken: (token: string | null) => void;
+  setUser: (user: User) => void
 }
 
 
@@ -56,7 +57,11 @@ export const useAuthStore = create<AuthState>()(
 
         set({ user: null });
       },
+      setUser: (user) => {
+        set({ user });
+      }
     }),
+
     {
       name: "auth-storage",
       partialize: (state) => ({ user: state.user, token: state.token }),

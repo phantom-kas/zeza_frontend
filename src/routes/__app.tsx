@@ -17,11 +17,12 @@ import Avatar from '../components/avatar/avatarWithImage'
 import { getImageUrl } from '../composabels/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useCartStore } from '../store/cart'
+
 const TopNav = () => {
   const { itemsCount, setItemsCount } = useCartStore();
   const { user, setToken, token } = useAuthStore();
   const loader = useLoaderStore()
-
+ const routerState = useRouterState();
   useQuery({
     queryKey: ['cart'],
     queryFn: async () =>
@@ -63,7 +64,11 @@ const TopNav = () => {
 
   }, [user]); // run when user changes
 
-  const routerState = useRouterState();
+    useEffect(() => {
+    setOpen(false);
+  }, [routerState.location.pathname]);
+  
+
   const [open, setOpen] = useState(false);
   console.log(Route)
   return <> <nav className={` top-0 shadow-sm flex items-center justify-center  dark:bg-neutral-950 dark:text-white   z-100 bg-white fixed lg:w-full w-max300 ${open ? ' ' : ' max-lg:w-full '}`} >

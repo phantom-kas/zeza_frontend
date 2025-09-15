@@ -39,6 +39,8 @@ function RouteComponent() {
 
 
       navigate({ to: '/manage-brands' });
+    }).catch(err=>{
+      setLoading(false)
     })
     setLoading(false)
   }

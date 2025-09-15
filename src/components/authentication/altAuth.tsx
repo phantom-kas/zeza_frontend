@@ -1,12 +1,20 @@
+import axios from "../../lib/axios";
+
 // eslint-disable-next-line react-refresh/only-export-components
 export default () => {
+  const login = async () => {
+    // 1. Get redirect URL from Laravel
+    const { data } = await axios.get("/google/redirect");
+    // 2. Redirect user to Google login
+    window.location.href = data.data.url;
+  };
   return <>
   <div className="w-full justify-between flex items-center gap-3 mt-4"  >
     <div className=" border-b-2 border-neutral-600 grow not-dark:border-neutral-300 "></div>
     or
     <div className=" border-b-2 border-neutral-600 grow not-dark:border-neutral-300"></div>
   </div>
-  <button className="flex items-center justify-center  theme1cont not-dark:text-gray-600 ha rounded-lg shadow-md hover:bg-gray-100">
+  <button type="button" onClick={login} className="flex items-center justify-center  theme1cont not-dark:text-gray-600 ha rounded-lg shadow-md hover:bg-gray-100">
     <div className="px-4 py-3">
       <svg className="h-6 w-6" viewBox="0 0 40 40">
         <path

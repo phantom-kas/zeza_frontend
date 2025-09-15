@@ -3,9 +3,11 @@ import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 import { useCartStore } from '../store/cart';
+import { useNavigate } from '@tanstack/react-router';
 
 export default function PaystackCheckout() {
     const { setItemsCount } = useCartStore();
+    const navigate = useNavigate()
 
     useEffect(() => {
         const startPayment = async () => {
@@ -20,6 +22,9 @@ export default function PaystackCheckout() {
                         .then(res => {
                             if (res.data.status == 'success') {
                                 setItemsCount(0)
+
+                                navigate({ to: '/' })
+
                             }
                         })
                 }

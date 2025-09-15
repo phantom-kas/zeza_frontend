@@ -7,7 +7,8 @@ import { isDev } from "../composabels/utils";
 //;
 
 if (isDev()) {
-  axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
+  // axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
+  axios.defaults.baseURL = "http://localhost:8000/api/";
   // axios.defaults.baseURL = "https://gc-rest-api.onrender.com/api/";
 
   // axios.defaults.baseURL = "https://gc-rest-api.onrender.com/api/";
@@ -174,9 +175,9 @@ axios.interceptors.response.use(
             user.setToken(null);
             return
           }
-          user.setToken(res.data.data.accessToken);
+          user.setToken(res.data.data.access_token);
           axios.defaults.headers.common["Authorization"] =
-            "Bearer " + res.data.data.accessToken;
+            "Bearer " + res.data.data.access_token;
           originalRequest.headers.Authorization =
             axios.defaults.headers.common["Authorization"];
           refresh = false;
