@@ -2,7 +2,7 @@
 import { createFileRoute, Outlet, Link, useRouterState } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import Logo from '../components/logo'
-import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon, TruckIcon } from 'lucide-react'
+import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon, TruckIcon, Settings2Icon } from 'lucide-react'
 import { ThemeToggle } from '../components/toggleThem'
 import { useEffect, useState } from 'react'
 import Footer from '../components/footer'
@@ -17,12 +17,31 @@ import Avatar from '../components/avatar/avatarWithImage'
 import { getImageUrl } from '../composabels/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useCartStore } from '../store/cart'
+import { useSettingsStore } from '../store/system'
+
+
 
 const TopNav = () => {
+
+  const {setSettings} = useSettingsStore()
+  useQuery({
+    queryKey: ['settings'],
+    queryFn: async () =>
+      await axios.get('/settings').then(res => {
+        if (res.data.status != 'success') return
+        res.data.data.hero_text = res.data.data.hero_text.replace(/\n/g, "<br />");
+        res.data.data.call_to_action_text = res.data.data.call_to_action_text.replace(/\n/g, "<br />");
+        setSettings(res.data.data)
+        return res.data.data
+      }),
+  })
+
+
+
   const { itemsCount, setItemsCount } = useCartStore();
   const { user, setToken, token } = useAuthStore();
   const loader = useLoaderStore()
- const routerState = useRouterState();
+  const routerState = useRouterState();
   useQuery({
     queryKey: ['cart'],
     queryFn: async () =>
@@ -64,10 +83,10 @@ const TopNav = () => {
 
   }, [user]); // run when user changes
 
-    useEffect(() => {
+  useEffect(() => {
     setOpen(false);
   }, [routerState.location.pathname]);
-  
+
 
   const [open, setOpen] = useState(false);
   console.log(Route)
@@ -87,19 +106,20 @@ const TopNav = () => {
         <NavItem to="/orders" label="Orders" icon={<TruckIcon size={16} />} />
 
 
-        {!(!token || !user) && <> <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={
+        {!(!token || !user) && <> <Dropdown className=" max-lg:w-full " dropClasses=' theme2cont' mainIcon={
           <NavItem to={null} label="Manage" icon={<Settings size={16} />} />
         } options={
           [
             { label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/profile' },
             { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
             { label: 'Manage Categories', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories' },
+            { label: 'Manage Featured', icon: <Boxes size={15} />, isLink: true, link: '/manage_featured' },
             { label: 'Manage Brands', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands' },
           ]
         } />
 
 
-          <Dropdown className=" max-lg:w-full" dropClasses=' theme1cont' mainIcon={
+          <Dropdown className=" max-lg:w-full" dropClasses=' theme2cont' mainIcon={
             <NavItem to={null} label="Add" icon={<PlusIcon size={16} />} />
           } options={
             [
@@ -121,6 +141,7 @@ const TopNav = () => {
           } options={
             [
               { label: 'Profile', icon: <User size={15} />, isLink: true, link: '/profile' },
+              { label: 'Settings', icon: <Settings2Icon size={15} />, isLink: true, link: '/settings' },
               { label: 'logout', icon: <LogOutIcon size={15} /> },
             ]
           } />

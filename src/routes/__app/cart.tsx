@@ -31,7 +31,7 @@ function RouteComponent() {
 
             queryClient.setQueryData(['cart'], () => {
                 console.log(res.data.data)
-                console.log('-----------------------remove=------------------')
+                console.log('-----------------------remove=-------------------------------')
                 return res.data.data
             })
             return
@@ -39,15 +39,13 @@ function RouteComponent() {
     }
     const updateCount = async (cart_item_id: any, c: number) => {
         return axios.post('/cart/update-item-count', { cart_item_id, count: c }, { _showAllMessages: true }).then(res => {
-            console.log('-----------------------remove=------------------')
+            console.log('-----------------------remove=------------------------------------------')
             console.log(res.data.status)
             if (res.data.status != 'success') return
             setItemsCount(res.data.data.total.totalUnits)
             queryClient.setQueryData(['cart'], () => {
                 console.log(res.data.data)
-                console.log('-----------------------remove=------------------')
-
-
+                console.log('-----------------------remove=---------------------------------------')
                 return res.data.data
             })
             return

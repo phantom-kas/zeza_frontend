@@ -1,5 +1,5 @@
 import PaystackPop from '@paystack/inline-js';
-import axios from 'axios';
+import axios from '../lib/axios';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 import { useCartStore } from '../store/cart';
@@ -12,13 +12,14 @@ export default function PaystackCheckout() {
     useEffect(() => {
         const startPayment = async () => {
             try {
+                
                 // call backend to initialize
                 const res = await axios.post('/initpay');
                 const accessCode = res.data.data.access_code;
                 // resume Paystack transaction with access code
                 const popup = new PaystackPop();
-                popup.resumeTransaction(accessCode).callbacks.onSuccess = () => {
-                    axios.get('paystack-callback/?ref=' + res.data.data.reference, { _showAllMessages: true, _load2: true })
+                popup.resumeTransaction(accessCode).callbacks.onSuccess = async () => {
+                   await axios.get('paystack-callback?ref=' + res.data.data.reference, { _showAllMessages: true, _load2: true })
                         .then(res => {
                             if (res.data.status == 'success') {
                                 setItemsCount(0)

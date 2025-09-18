@@ -7,13 +7,15 @@ import { isDev } from "../composabels/utils";
 //;
 
 if (isDev()) {
-  // axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
-  axios.defaults.baseURL = "http://localhost:8000/api/";
+  axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
+  // axios.defaults.baseURL = "http://localhost:8000/api/";
+
+  // axios.defaults.baseURL = "https://apishop.savanagh.com/api/";
   // axios.defaults.baseURL = "https://gc-rest-api.onrender.com/api/";
 
   // axios.defaults.baseURL = "https://gc-rest-api.onrender.com/api/";
 } else {
-  axios.defaults.baseURL = "https://gc-rest-api.onrender.com/api/";
+  axios.defaults.baseURL = "https://apishop.savanagh.com/api/";
 }
 const axiosApiInstance = axios.create();
 
@@ -136,8 +138,11 @@ axios.interceptors.response.use(
         }
       }
     }
-    if (originalRequest._noRefresh) {
-      return error.response;
+    if (originalRequest) {
+
+      if (originalRequest._noRefresh) {
+        return error.response;
+      }
     }
     if (error.response) {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -165,7 +170,7 @@ axios.interceptors.response.use(
         method: "POST",
         data,
       })
-        .finally(() => {})
+        .finally(() => { })
         .then(function (res) {
           return res;
         })

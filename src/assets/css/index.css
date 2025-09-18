@@ -9,6 +9,7 @@
   --container-max2000: min(1100px, 100%);
   --container-max500: min(500px, 100%);
   --container-max600: min(600px, 100%);
+  --container-max700: min(700px, 100%);
   --container-max300: min(300px, 100%);
   --container-max200: min(200px, 100%);
   --container-max100: min(100px, 100%);
@@ -143,4 +144,8 @@
   width: calc((var(--rating) / var(--max-stars)) * 100%);
   overflow: hidden;
   white-space: nowrap;
+}
+
+.h1{
+  @apply text-3xl w-full leading-none mb-5 sm:w-[max(379px)]  font-stretch-100%
 }

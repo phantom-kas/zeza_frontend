@@ -29,10 +29,19 @@ export function isDev(): boolean {
   return process.env.NODE_ENV === "development"
 }
 
+export function safeSlugify(str: string, separator = ".") {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "") // remove non-alphanumeric
+    .replace(/\s+/g, separator);   // replace spaces with separator
+}
+export const apiBase = new URL(axios.defaults.baseURL as string).origin
 export const getImageUrl = (name: string) => {
   if (!name) return '';
-  if (isDev() && !name.includes('http')) {
+  if (!name.includes('http')) {
     const base = new URL(axios.defaults.baseURL as string).origin
+    // window.alert(base)
     return base + name
   }
   console.log('img == ',name)

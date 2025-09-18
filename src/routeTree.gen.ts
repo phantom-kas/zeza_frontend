@@ -15,10 +15,13 @@ import { Route as _appRouteImport } from './routes/__app'
 import { Route as _appIndexRouteImport } from './routes/__app/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as _appShopRouteImport } from './routes/__app/shop'
+import { Route as _appSettingsRouteImport } from './routes/__app/settings'
 import { Route as _appOrdersRouteImport } from './routes/__app/orders'
+import { Route as _appManage_featuredRouteImport } from './routes/__app/manage_featured'
 import { Route as _appManageProductsRouteImport } from './routes/__app/manage-products'
 import { Route as _appManageCategoriesRouteImport } from './routes/__app/manage-categories'
 import { Route as _appManageBrandsRouteImport } from './routes/__app/manage-brands'
+import { Route as _appFeaturedRouteImport } from './routes/__app/featured'
 import { Route as _appCartRouteImport } from './routes/__app/cart'
 import { Route as _appAboutRouteImport } from './routes/__app/about'
 import { Route as _appProductsIndexRouteImport } from './routes/__app/products/index'
@@ -68,9 +71,19 @@ const _appShopRoute = _appShopRouteImport.update({
   path: '/shop',
   getParentRoute: () => _appRoute,
 } as any)
+const _appSettingsRoute = _appSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => _appRoute,
+} as any)
 const _appOrdersRoute = _appOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appManage_featuredRoute = _appManage_featuredRouteImport.update({
+  id: '/manage_featured',
+  path: '/manage_featured',
   getParentRoute: () => _appRoute,
 } as any)
 const _appManageProductsRoute = _appManageProductsRouteImport.update({
@@ -86,6 +99,11 @@ const _appManageCategoriesRoute = _appManageCategoriesRouteImport.update({
 const _appManageBrandsRoute = _appManageBrandsRouteImport.update({
   id: '/manage-brands',
   path: '/manage-brands',
+  getParentRoute: () => _appRoute,
+} as any)
+const _appFeaturedRoute = _appFeaturedRouteImport.update({
+  id: '/featured',
+  path: '/featured',
   getParentRoute: () => _appRoute,
 } as any)
 const _appCartRoute = _appCartRouteImport.update({
@@ -194,10 +212,13 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
   '/cart': typeof _appCartRoute
+  '/featured': typeof _appFeaturedRoute
   '/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/manage-products': typeof _appManageProductsRouteWithChildren
+  '/manage_featured': typeof _appManage_featuredRoute
   '/orders': typeof _appOrdersRoute
+  '/settings': typeof _appSettingsRoute
   '/shop': typeof _appShopRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/': typeof _appIndexRoute
@@ -224,7 +245,10 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/about': typeof _appAboutRoute
   '/cart': typeof _appCartRoute
+  '/featured': typeof _appFeaturedRoute
+  '/manage_featured': typeof _appManage_featuredRoute
   '/orders': typeof _appOrdersRoute
+  '/settings': typeof _appSettingsRoute
   '/shop': typeof _appShopRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/': typeof _appIndexRoute
@@ -253,10 +277,13 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/__app/about': typeof _appAboutRoute
   '/__app/cart': typeof _appCartRoute
+  '/__app/featured': typeof _appFeaturedRoute
   '/__app/manage-brands': typeof _appManageBrandsRouteWithChildren
   '/__app/manage-categories': typeof _appManageCategoriesRouteWithChildren
   '/__app/manage-products': typeof _appManageProductsRouteWithChildren
+  '/__app/manage_featured': typeof _appManage_featuredRoute
   '/__app/orders': typeof _appOrdersRoute
+  '/__app/settings': typeof _appSettingsRoute
   '/__app/shop': typeof _appShopRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/__app/': typeof _appIndexRoute
@@ -285,10 +312,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/about'
     | '/cart'
+    | '/featured'
     | '/manage-brands'
     | '/manage-categories'
     | '/manage-products'
+    | '/manage_featured'
     | '/orders'
+    | '/settings'
     | '/shop'
     | '/auth/callback'
     | '/'
@@ -315,7 +345,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/about'
     | '/cart'
+    | '/featured'
+    | '/manage_featured'
     | '/orders'
+    | '/settings'
     | '/shop'
     | '/auth/callback'
     | '/'
@@ -343,10 +376,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/__app/about'
     | '/__app/cart'
+    | '/__app/featured'
     | '/__app/manage-brands'
     | '/__app/manage-categories'
     | '/__app/manage-products'
+    | '/__app/manage_featured'
     | '/__app/orders'
+    | '/__app/settings'
     | '/__app/shop'
     | '/auth/callback'
     | '/__app/'
@@ -420,11 +456,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof _appShopRouteImport
       parentRoute: typeof _appRoute
     }
+    '/__app/settings': {
+      id: '/__app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof _appSettingsRouteImport
+      parentRoute: typeof _appRoute
+    }
     '/__app/orders': {
       id: '/__app/orders'
       path: '/orders'
       fullPath: '/orders'
       preLoaderRoute: typeof _appOrdersRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/manage_featured': {
+      id: '/__app/manage_featured'
+      path: '/manage_featured'
+      fullPath: '/manage_featured'
+      preLoaderRoute: typeof _appManage_featuredRouteImport
       parentRoute: typeof _appRoute
     }
     '/__app/manage-products': {
@@ -446,6 +496,13 @@ declare module '@tanstack/react-router' {
       path: '/manage-brands'
       fullPath: '/manage-brands'
       preLoaderRoute: typeof _appManageBrandsRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/featured': {
+      id: '/__app/featured'
+      path: '/featured'
+      fullPath: '/featured'
+      preLoaderRoute: typeof _appFeaturedRouteImport
       parentRoute: typeof _appRoute
     }
     '/__app/cart': {
@@ -660,10 +717,13 @@ const _appProductIdRouteWithChildren = _appProductIdRoute._addFileChildren(
 interface _appRouteChildren {
   _appAboutRoute: typeof _appAboutRoute
   _appCartRoute: typeof _appCartRoute
+  _appFeaturedRoute: typeof _appFeaturedRoute
   _appManageBrandsRoute: typeof _appManageBrandsRouteWithChildren
   _appManageCategoriesRoute: typeof _appManageCategoriesRouteWithChildren
   _appManageProductsRoute: typeof _appManageProductsRouteWithChildren
+  _appManage_featuredRoute: typeof _appManage_featuredRoute
   _appOrdersRoute: typeof _appOrdersRoute
+  _appSettingsRoute: typeof _appSettingsRoute
   _appShopRoute: typeof _appShopRouteWithChildren
   _appIndexRoute: typeof _appIndexRoute
   _appProductIdRoute: typeof _appProductIdRouteWithChildren
@@ -675,10 +735,13 @@ interface _appRouteChildren {
 const _appRouteChildren: _appRouteChildren = {
   _appAboutRoute: _appAboutRoute,
   _appCartRoute: _appCartRoute,
+  _appFeaturedRoute: _appFeaturedRoute,
   _appManageBrandsRoute: _appManageBrandsRouteWithChildren,
   _appManageCategoriesRoute: _appManageCategoriesRouteWithChildren,
   _appManageProductsRoute: _appManageProductsRouteWithChildren,
+  _appManage_featuredRoute: _appManage_featuredRoute,
   _appOrdersRoute: _appOrdersRoute,
+  _appSettingsRoute: _appSettingsRoute,
   _appShopRoute: _appShopRouteWithChildren,
   _appIndexRoute: _appIndexRoute,
   _appProductIdRoute: _appProductIdRouteWithChildren,

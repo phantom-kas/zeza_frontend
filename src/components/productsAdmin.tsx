@@ -1,10 +1,18 @@
 import { Link, useNavigate } from "@tanstack/react-router"
-import { Eye, ImageIcon, ImagesIcon, Pencil, RefreshCcwIcon, ShoppingCart, Trash2 } from "lucide-react"
+import { Eye, ImageIcon, ImagesIcon, Pencil, RefreshCcwIcon, ShoppingCart, StarIcon, Trash2 } from "lucide-react"
 import SwiperList from "./swiperList"
 import ToolTip from "./toolTip"
 import type { MouseEvent } from "react"
 
-export const ProduCardAdmin = ({ onRestore = () => { }, status, id, created_at, price, media, className, to, onDelete = () => { }, url = "/src/assets/images/lap.png", title, describtion }: { created_at?: string, status?: string, url?: string, onDelete: (e: string | number) => void, onRestore: (e: string | number) => void, className?: string, price: string, title: string, describtion: string, id: string | number, to: string, media: string }) => {
+interface props {
+  created_at?: string, status?: string, url?: string,
+  onRemoveFromFeatured: (e: string | number) => void,
+  onAddToFeatured: (e: string | number) => void,
+  onDelete: (e: string | number) => void, featuredId?: string | null, onRestore: (e: string | number) => void, className?: string, price: string, title: string, describtion: string, id: string | number, to: string, media: string
+}
+export const ProduCardAdmin = ({ onRestore = () => { }, featuredId = undefined, status, id, created_at, price, media, className, to, onDelete = () => { }, onAddToFeatured = () => { },
+  onRemoveFromFeatured = () => { },
+  url = "/src/assets/images/lap.png", title, describtion }: props) => {
   let mediaparsed = []
   if (media) {
     mediaparsed = JSON.parse(media)
@@ -28,6 +36,16 @@ export const ProduCardAdmin = ({ onRestore = () => { }, status, id, created_at, 
     <div className=" text-xs  items-center justify-start flex w-full">{created_at}</div>
 
     <div className="flex justify-end gap-3 w-full">
+
+      {featuredId ? <ToolTip onClick={(e) => handleOverlayClick(e, () => onRemoveFromFeatured(id))} className={"flex justify-center items-center p-2 theme1cont not-dark:bg-white  "} TooltipContent={'Add to featured'}>
+        <StarIcon className="fill-yellow-500 stroke-yellow-500" size={17} />
+      </ToolTip> :
+        <ToolTip onClick={(e) => handleOverlayClick(e, () => onAddToFeatured(id))} className={"flex justify-center items-center p-2 theme1cont not-dark:bg-white"} TooltipContent={'Add to featured'}>
+          <StarIcon size={17} />
+        </ToolTip>
+
+      }
+      {/* {id}-{featuredId} */}
       <ToolTip onClick={e => handleOverlayClick(e, () => navigate({ to: '/product/edit/' + id }))} className="flex justify-center items-center p-2 theme1cont not-dark:bg-white" TooltipContent={'Edit Product'}>
         <Pencil size={17} />
       </ToolTip>
@@ -45,7 +63,7 @@ export const ProduCardAdmin = ({ onRestore = () => { }, status, id, created_at, 
     </div>
 
     {status == 'deleted' && <div className=" w-[200%] flex items-center justify-center -rotate-45 absolute -left-[50%] top-[50%] z-[1] font-[900] text-3xl text-red-600 border-red-600 border-5">Deleted</div>}
-  </Link>
+  </Link >
 
 
 }

@@ -14,7 +14,7 @@ export default () => {
     or
     <div className=" border-b-2 border-neutral-600 grow not-dark:border-neutral-300"></div>
   </div>
-  <button type="button" onClick={login} className="flex items-center justify-center  theme1cont not-dark:text-gray-600 ha rounded-lg shadow-md hover:bg-gray-100">
+  <button type="button" onClick={login} className="flex items-center justify-center  theme2cont not-dark:text-gray-600 ha rounded-lg shadow-md hover:bg-gray-100">
     <div className="px-4 py-3">
       <svg className="h-6 w-6" viewBox="0 0 40 40">
         <path

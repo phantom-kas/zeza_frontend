@@ -1,10 +1,12 @@
 import { Loader } from "lucide-react"
 import FullscreenOverlay from "./FullscreenOverlay"
+import CloseRow from "./closeRow"
 
 export default ({ isLoading = false, text = 'Are you sure you want to proceed?', isOpen = false, onOk = (() => { }), cancel = (() => { }), onClose = (() => { }) }) => {
     return <FullscreenOverlay className=' p-3  w-max1000' isOpen={isOpen} onClose={onClose}>
         <div className=' mx-auto theme1cont dark:bg-black not-dark:bg-white p-4 w-max500 '>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-4'>
+                <CloseRow onclick={onClose}/>
                 <div>
                     {text}
                 </div>

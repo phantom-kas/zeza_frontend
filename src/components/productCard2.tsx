@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useCartStore } from "../store/cart";
 import { Adder } from "./adder";
-import { anyCurrency } from "../composabels/utils";
+import { anyCurrency, apiBase, safeSlugify } from "../composabels/utils";
 import { BlueButton } from "./ButtonBlue";
 import DOMPurify from "dompurify"
 import SwiperList2 from "./swiperList2";
 import axios from "../lib/axios";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Share2 } from "lucide-react";
 import Rating from "./rating";
+import { useSettingsStore } from "../store/system";
+import ToolTip from "./toolTip";
+import NativeShare from "./share";
 
 type Product = {
   name: string;
@@ -23,6 +26,8 @@ type Product = {
 
 
 export default function ProductDetails({ product, className }: { className?: string, product: Product }) {
+  const { settings } = useSettingsStore()
+
   const [isLoading, setIsloading] = useState(false)
   const handleAddToCart = async (e) => {
     e.preventDefault()
@@ -51,7 +56,7 @@ export default function ProductDetails({ product, className }: { className?: str
         )}
 
         <h3 className="text-[40px] uppercase sm:w-[70%] leading-none w-full">
-          {product.name}
+          {product.name}  <NativeShare url={apiBase + '/product/' + safeSlugify(product.name) + '-' + product.id} title={""} text={""} />
         </h3>
 
         <span className="opacity-[50%] w-full sm:w-[70%]" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}>
@@ -69,7 +74,9 @@ export default function ProductDetails({ product, className }: { className?: str
         <form onSubmit={handleAddToCart} className="flex  gap-4 px gap-y-5 flex-col w-full">
           <Adder value={1} onChange={(e: number) => setQuantity(Number(e))} />
 
-          <BlueButton loading={isLoading} className=" w-full" label=" ADD TO CART" >
+
+          {/* {settings.allow_checkout} */}
+          <BlueButton loading={isLoading} className=" w-full" label={settings.allow_checkout == 1 ? "ADD TO CART" : 'Purchase'} >
 
           </BlueButton>
         </form>
