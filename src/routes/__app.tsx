@@ -1,5 +1,5 @@
 // src/routes/__app.tsx
-import { createFileRoute, Outlet, Link, useRouterState } from '@tanstack/react-router'
+import { createFileRoute, Outlet, Link, useRouterState, useNavigate } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import Logo from '../components/logo'
 import { HomeIcon, Store, ShoppingCart, Heart, User, LogIn, MenuIcon, UserRoundCog, TableConfig, Hourglass, LogOutIcon, Settings, PlusIcon, PackagePlus, UserPlus2, Boxes, Octagon, TruckIcon, Settings2Icon } from 'lucide-react'
@@ -23,7 +23,7 @@ import { useSettingsStore } from '../store/system'
 
 const TopNav = () => {
 
-  const {setSettings} = useSettingsStore()
+  const { setSettings, settings } = useSettingsStore()
   useQuery({
     queryKey: ['settings'],
     queryFn: async () =>
@@ -71,9 +71,6 @@ const TopNav = () => {
           return
         }
         console.warn('getting cart -----------------')
-      } catch (err) {
-        setToken(null)
-        console.error("Error checking token:", err);
       } finally {
         loader.stop2()
       }
@@ -96,41 +93,53 @@ const TopNav = () => {
         <button onClick={() => setOpen(!open)} title='Toggle Menu' type="button" className=" p-2 rounded-full lg:hidden">
           <MenuIcon />
         </button>
-        <Logo />
+        
+          <Link to='/' rel="stylesheet" href="" >
+            <Logo  />
+          </Link>
       </div>
       <div className={`' flex lg:items-center lg:justify-start gap-x-1 lg:flex-row flex-col items-start justify-start px-2 lg:px-0 max-lg:w-full lg:mt-0 mt-3 ${open ? 'flex ' : ' max-lg:hidden'}`}>
         <NavItem to="/" label="Home" icon={<HomeIcon size={16} />} />
         <NavItem to="/shop" label="Shop" icon={<Store size={16} />} />
-        <NavItem className='relative ' to="/cart" label={itemsCount > 0 ? <> Cart <div className='flex justify-center items-center w-5 h-5 rounded-2xl absolute text-[11px] font-[600]  left-0 top-[0px] text-xs bg-amber-700 text-white'> {itemsCount}</div></> : 'Cart'} icon={<ShoppingCart size={16} />} />
-        <NavItem to="/" label="Favourite" icon={<Heart size={16} />} />
-        <NavItem to="/orders" label="Orders" icon={<TruckIcon size={16} />} />
+        {!(!token || !user) && <> <NavItem className='relative ' to="/cart" label={itemsCount > 0 ? <> Cart <div className='flex justify-center items-center w-5 h-5 rounded-2xl absolute text-[11px] font-[600]  left-0 top-[0px] text-xs bg-amber-700 text-white'> {itemsCount}</div></> : 'Cart'} icon={<ShoppingCart size={16} />} />
+          {/* <NavItem to="/" label="Favourite" icon={<Heart size={16} />} /> */}
+
+          {settings.allow_checkout == 1 ? <NavItem to="/orders" label="Orders" icon={<TruckIcon size={16} />} /> : <Dropdown className=" max-lg:w-full " dropClasses=' theme2cont' mainIcon={
+            <NavItem to={null} label="Orders" icon={<TruckIcon size={16} />} />
+          } options={
+            [
+              { label: 'Orders', icon: <TruckIcon size={16} />, isLink: true, link: '/orders' },
+              { hide: user.role == 'user', label: 'Purchases', icon: <TruckIcon size={16} />, isLink: true, link: '/purchases' },
+
+            ]
+          } />}
 
 
-        {!(!token || !user) && <> <Dropdown className=" max-lg:w-full " dropClasses=' theme2cont' mainIcon={
-          <NavItem to={null} label="Manage" icon={<Settings size={16} />} />
-        } options={
-          [
-            { label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/profile' },
-            { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
-            { label: 'Manage Categories', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories' },
-            { label: 'Manage Featured', icon: <Boxes size={15} />, isLink: true, link: '/manage_featured' },
-            { label: 'Manage Brands', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands' },
-          ]
-        } />
+          {user.role != 'user' && <Dropdown className=" max-lg:w-full " dropClasses=' theme2cont' mainIcon={
+            <NavItem to={null} label="Manage" icon={<Settings size={16} />} />
+          } options={
+            [
+              { hide: user.role != 'super_admin', label: 'Manage Users', icon: <UserRoundCog size={16} />, isLink: true, link: '/manage-users' },
+              { label: 'Manage Products', icon: <TableConfig size={16} />, isLink: true, link: '/manage-products' },
+              { label: 'Manage Categories', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories' },
+              { label: 'Manage Featured', icon: <Boxes size={15} />, isLink: true, link: '/manage_featured' },
+              { label: 'Manage Brands', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands' },
+            ]
+          } />}
 
-
-          <Dropdown className=" max-lg:w-full" dropClasses=' theme2cont' mainIcon={
+          {user.role != 'user' && <Dropdown className=" max-lg:w-full" dropClasses=' theme2cont' mainIcon={
             <NavItem to={null} label="Add" icon={<PlusIcon size={16} />} />
           } options={
             [
-              { label: 'Add User', icon: <UserPlus2 size={16} />, isLink: true, link: '/profile' },
+              { hide: user.role != 'super_admin', label: 'Add User', icon: <UserPlus2 size={16} />, isLink: true, link: '/profile' },
               { label: 'Add Product', icon: <PackagePlus size={16} />, isLink: true, link: '/manage-products/add' },
               { label: 'Add Category', icon: <Boxes size={15} />, isLink: true, link: '/manage-categories/add' },
               { label: 'Add Brand', icon: <Octagon size={15} />, isLink: true, link: '/manage-brands/add' },
             ]
-          } />
+          } />}
         </>
         }
+        {/* {user?.role } */}
       </div>
       <div className={` flex   lg:items-center lg:justify-start gap-x-1 lg:flex-row flex-col items-start justify-start max-lg:w-full px-2 lg:px-0 mt-auto lg:mt-0  ${open ? 'flex ' : ' max-lg:hidden'}`}>
         <ThemeToggle />
@@ -141,8 +150,8 @@ const TopNav = () => {
           } options={
             [
               { label: 'Profile', icon: <User size={15} />, isLink: true, link: '/profile' },
-              { label: 'Settings', icon: <Settings2Icon size={15} />, isLink: true, link: '/settings' },
-              { label: 'logout', icon: <LogOutIcon size={15} /> },
+              { hide: user.role == 'user', label: 'Settings', icon: <Settings2Icon size={15} />, isLink: true, link: '/settings' },
+              { label: 'logout',isLink: true, link: '/logout', icon: <LogOutIcon size={15} /> },
             ]
           } />
         }
@@ -157,19 +166,24 @@ const TopNav = () => {
 
 
 export const Route = createFileRoute('/__app')({
-  component: () => (
-    <>
-      <TopNav />
-      <main className=' mx-auto w-full mt-12 not-dark:text-black dark:text-white'>
-        <Outlet />
-      </main>
-      {<ModelComponent />}
-      <Footer />
-      <Splash />
-    </>
-  ),
+
+  component: CC,
 })
 
+function CC() {
+
+  const settings = useSettingsStore()
+  return <>
+    <TopNav />
+    {settings.settings.allow_checkout}
+    <main className=' mx-auto w-full mt-6 not-dark:text-black dark:text-white'>
+      <Outlet />
+    </main>
+    {<ModelComponent />}
+    <Footer />
+    <Splash />
+  </>
+}
 const Splash = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const loader = useLoaderStore()

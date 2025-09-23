@@ -6,7 +6,7 @@ import ConfirmCOmponent from "./confirmCOmponent";
 import { anyCurrency } from "../composabels/utils";
 import { ProduCardAdmin } from "./productsAdmin";
 
-export default ({ featured = undefined }:{featured:any}) => {
+export default ({ featured = undefined }: { featured: any }) => {
     const queryClient = useQueryClient()
     const [seletedId, setSeletedId] = useState<string | number>(0);
     const [showConf, setShowConf] = useState(false);
@@ -18,7 +18,7 @@ export default ({ featured = undefined }:{featured:any}) => {
         setShowConf(false)
         axios.delete('/product/' + seletedId + '/delete', { _showAllMessages: true }).then(res => {
             if (res.data.status != 'success') return
-            queryClient.setQueryData(["products"], (oldData: any) => {
+            queryClient.setQueryData(["products" + JSON.stringify(featured)], (oldData: any) => {
                 if (!oldData) return oldData
 
                 return {
@@ -43,7 +43,7 @@ export default ({ featured = undefined }:{featured:any}) => {
             if (res.data.status != 'success') return
             if (res.data.data < 1) return
 
-            queryClient.setQueryData(["products"], (oldData: any) => {
+            queryClient.setQueryData(['products' + JSON.stringify(featured)], (oldData: any) => {
                 if (!oldData) return oldData
                 return {
                     ...oldData,
@@ -69,7 +69,7 @@ export default ({ featured = undefined }:{featured:any}) => {
         await axios.post('/product/add-to-featured/' + seletedId, { _showAllMessages: true }).then(res => {
             setShowConfF(false)
             if (res.data.status != 'success') return
-            queryClient.setQueryData(["products"], (oldData: any) => {
+            queryClient.setQueryData(["products" + JSON.stringify(featured)], (oldData: any) => {
 
                 if (!oldData) return oldData
                 return {
@@ -92,7 +92,7 @@ export default ({ featured = undefined }:{featured:any}) => {
         axios.delete('/product/' + seletedId + '/restore', { _showAllMessages: true }).then(res => {
             if (res.data.status != 'success') return
             // window.alert('pop')
-            queryClient.setQueryData(["products"], (oldData: any) => {
+            queryClient.setQueryData(["products" + JSON.stringify(featured)], (oldData: any) => {
                 if (!oldData) return oldData
                 return {
                     ...oldData,
@@ -113,9 +113,8 @@ export default ({ featured = undefined }:{featured:any}) => {
     }
     return <> <div className=" relative @container grow pt-10 pb-20">
 
-
-        <InfiniteLoad params={f} renderItem={(item) => {
-            return <ProduCardAdmin
+        <InfiniteLoad params={f} renderItem={(item: any) => {
+            return <> <ProduCardAdmin key={item.id}
                 status={item.status}
                 featuredId={item.featured_id}
                 onRestore={(id) => { setSeletedId(id); setShowRConf(true) }}
@@ -125,8 +124,8 @@ export default ({ featured = undefined }:{featured:any}) => {
                 className=" w-full @xs:w-max300"
                 onAddToFeatured={(id) => { setSeletedId(id); setShowConfF(true) }}
                 onRemoveFromFeatured={(id) => { setSeletedId(id); setShowRFConf(true) }}
-                title={item.name} describtion='' />
-        }} className='@container grow grid grid-1 @sm:grid-cols-3 @xs:grid-cols-2 w-full gap-4' is='div' qKey={'products'+JSON.stringify(featured)} url='/products'
+                title={item.name} describtion='' /></>
+        }} className='@container grow grid grid-1 @sm:grid-cols-3 @xs:grid-cols-2 w-full gap-4' is='div' qKey={'products' + JSON.stringify(featured)} url='/products'
         />
     </div>
 

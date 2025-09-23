@@ -8,6 +8,7 @@ import axios from '../../lib/axios'
 import TextField3 from '../../components/forms/text_area3'
 import { useState } from 'react'
 import { useSettingsStore } from '../../store/system'
+import Media from '../../components/media'
 
 export const Route = createFileRoute('/__app/settings')({
     component: RouteComponent,
@@ -119,16 +120,14 @@ function RouteComponent() {
         setLoadingASC(false)
     }
 
-    return data && <div className=" w-max700  mx-auto flex flex-col gap-10 py-20 px-4">
+    return data && <div className=" w-max700  mx-auto flex flex-col items-start justify-start gap-10 py-20 px-4">
         <h1 className='h1'>Settings</h1>
-        {/* {aSC} {data.allow_checkout} */}
         <Switch label='Allow Self Checkout' onChange={handleSubmitAc} checked={data.allow_checkout == 1} />
         <form onSubmit={handleSubmitMe} className='flex gap-3 w-full flex-wrap items-end justify-start'>
             <InputField onInput={(e) => setMe(e.value)} val={data.alt_checkout_link} className=' w-max500' name={'wa'} label='Wa.Me link' icon={<LinkIcon />} />
             {data.alt_checkout_link != me && <BlueButton loading={isLoadingMe} label='Submit' />
             }
         </form>
-        {/* {me} */}
 
         <form onSubmit={handleSubmitHe} className='flex gap-3 w-full flex-wrap items-end justify-start'>
             <TextField3 onInput={(e) => setHe(e.value)} cols={3} val={data.call_to_action_text} className=' w-max500' name={'wa'} label='Hero Title' icon={<LinkIcon />} />
@@ -141,5 +140,9 @@ function RouteComponent() {
             {data.hero_text != he2 && <BlueButton loading={isLoadinghe2} label='Submit' />
             }
         </form>
+
+        <h1 className='h1 mt-6'>Home Page Images</h1>
+        
+        <Media/>
     </div>
 }

@@ -23,7 +23,7 @@ export default function Avatar({ url }: AvatarProps) {
           alt="User Avatar"
           className="w-full h-full object-cover"
         />
-      ) : (
+      ) : (<>
         <div className="text-gray-400">
           <svg
             className="w-6 h-6"
@@ -40,6 +40,8 @@ export default function Avatar({ url }: AvatarProps) {
             />
           </svg>
         </div>
+        <span className='hidden'>{url}</span>
+      </>
       )}
     </div>
   );

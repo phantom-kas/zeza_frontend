@@ -11,6 +11,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-react';
 import FullscreenOverlay from '../../components/FullscreenOverlay';
 import CloseRow from '../../components/closeRow';
 import ConfirmCOmponent from '../../components/confirmCOmponent';
+import { Link } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/__app/product/edit/$id')({
   component: RouteComponent,
@@ -204,10 +205,10 @@ function RouteComponent() {
         <h1>
           Images
         </h1>
-        <button onClick={() => setIsOpenAddCat(true)} className=' flex flex-row gap-2 justify-center items-center  font-[700] text-blue-700 hover:bg-blue-600/20 px-3 rounded-2xl py-1'>
+        <Link to={"/product/edit-media/"+id} className=' flex flex-row gap-2 justify-center items-center  font-[700] text-blue-700 hover:bg-blue-600/20 px-3 rounded-2xl py-1'>
           <Pencil size={15} />
           Edit
-        </button>
+        </Link>
       </div>
       <SwiperList className={" w-full h-70 theme2cont rounded-2xl"} media={data.media} />
 

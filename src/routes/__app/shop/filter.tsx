@@ -8,12 +8,6 @@ import { BlueButton } from '../../../components/ButtonBlue'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-export const Route = createFileRoute("/__app/shop/filter")({
-
-  component: Filters,
-  validateSearch: () => ({}) as filters
-})
-
 interface filters {
   brand?: string[],
   category?: string | undefined,
@@ -21,6 +15,13 @@ interface filters {
   min?: number,
   max?: number,
 }
+export const Route = createFileRoute("/__app/shop/filter")({
+
+  component: Filters,
+  validateSearch: () => ({}) as filters
+})
+
+
 
 
 
@@ -68,7 +69,7 @@ function Filters() {
 
   const handleSearch = () => {
     let brands = brandsState.filter((e: any) => e.checked)
-      .map((e: any) => (e.label as string).replace(/\s+/g, '+'))
+      .map((e: any) => e.label)
 
     navigate({ search: { ...search, brand: brands.length ? brands : undefined, } })
   }
@@ -110,7 +111,7 @@ function Filters() {
       </button>
       <div className=' w-full border-b not-dark:border-neutral-200 dark:border-neutral-700  my-6'></div>
 
-      <ValidatedInput type='number' name={'amt'} label='Price' />
+      {/* <ValidatedInput type='number' name={'amt'} label='Price' /> */}
       {/* {...brandsState} */}
 
 

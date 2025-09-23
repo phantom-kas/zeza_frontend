@@ -11,8 +11,11 @@
   --container-max600: min(600px, 100%);
   --container-max700: min(700px, 100%);
   --container-max300: min(300px, 100%);
+  --container-max350: min(350px, 100%);
+  --container-max400: min(400px, 100%);
   --container-max200: min(200px, 100%);
   --container-max100: min(100px, 100%);
+  --container-max50: min(50px, 100%);
   --container-max150: min(150px, 100%);
 
   --color-white1: #f1f1f1;
@@ -21,7 +24,8 @@
   --color-white2: #e5e5ef;
   --color-white3: #7f7e83;
   --color-lightblue: #e6eff5;
-  /* --breakpoint-xs:425px */
+
+  --breakpoint-mdc:901px
   /* --color-lightblueDark:#010200; */
 }
 
@@ -31,7 +35,8 @@
   @apply bg-black;
 }
 
-.theme1cont,.theme2cont {
+.theme1cont,
+.theme2cont {
   @apply dark:ring-neutral-900 dark:ring;
 }
 
@@ -69,12 +74,12 @@
   @apply bg-black;
 }
 
-.themeBg{
+.themeBg {
   @apply dark:bg-black not-dark:bg-white
 }
 
 .dark .ql-editor.ql-blank::before {
-  /* color: red !important; */
+  /* color: red!important; */
   @apply text-white3;
 }
 
@@ -109,34 +114,37 @@
 
 
 
-  .swiper-pagination-fraction{
-    
-      background: #45454594;
-      border-radius: 5px;
-      width: 80px !important;
-      margin-inline: auto;
-      color: white !important;
-      left: calc(50% - 40px) !important;
-    
-  }
+.swiper-pagination-fraction {
+
+  background: #45454594;
+  border-radius: 5px;
+  width: 80px !important;
+  margin-inline: auto;
+  color: white !important;
+  left: calc(50% - 40px) !important;
+
+}
 
 
 
 
-  .rating {
+.rating {
   unicode-bidi: bidi-override;
-  color: #ccc; /* empty star color */
+  color: #ccc;
+  /* empty star color */
   position: relative;
   display: inline-block;
   line-height: 1;
 }
 
 .rating::before {
-  content: "★★★★★"; /* background stars */
+  content: "★★★★★";
+  /* background stars */
 }
 
 .rating::after {
-  content: "★★★★★"; /* filled stars */
+  content: "★★★★★";
+  /* filled stars */
   color: gold;
   position: absolute;
   top: 0;
@@ -146,6 +154,42 @@
   white-space: nowrap;
 }
 
-.h1{
-  @apply text-3xl w-full leading-none mb-5 sm:w-[max(379px)]  font-stretch-100%
+.h1 {
+  @apply text-3xl w-full leading-none mb-5 sm:w-[max(379px)] font-stretch-100%
+}
+
+
+
+.blurbg {
+  content: "";
+  top: 0;
+  left: 0;
+  /* position: absolute;
+  z-index: -1; */
+  background: hsla(0, 0%, 100%, 0.562);
+
+  transition: opacity .3s ease-out;
+  visibility: visible;
+  /* opacity: 1; */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+
+.dark .blurbg {
+  background: hsla(0, 0%, 9%, 0.61);
+}
+
+.gradiant-text {
+  background: -webkit-linear-gradient(315deg, rgb(255, 22, 64) 25%, rgb(255, 153, 0));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .gradiant-text {
+  background: -webkit-linear-gradient(315deg, rgb(255, 54, 90) 25%, rgb(255, 164, 27));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

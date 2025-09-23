@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import axios from 'axios'
-import { EllipsisIcon, Expand, ImageIcon, Trash2, VideoIcon } from 'lucide-react'
+import { EllipsisIcon, Expand, ImageIcon, Pencil, Trash2, VideoIcon } from 'lucide-react'
 import { getImageUrl } from '../../composabels/utils'
 import { Dropdown } from '../../components/dopDown'
 import { BlueButton } from '../../components/ButtonBlue'
@@ -16,8 +16,9 @@ export const Route = createFileRoute('/__app/product/edit-media/$id')({
   component: RouteComponent,
 })
 
-const qFn = (id: string | number) => {
-  return axios.get(`/products/${id}/media`).then((res) => { return res.data.data.media })
+const qFn = async (id: string | number) => {
+  const res = await axios.get(`/products/${id}/media`)
+  return res.data.data.media
 }
 function RouteComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,8 @@ function RouteComponent() {
   const [showConf, setshowConf] = useState(false);
   const [cropperImage, setCropperImage] = useState<{ [key: string]: object }>({});
   const [description, setDescription] = useState({});
+
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState<string | null>(null);
   const [selected, setSeleted] = useState<{}>({});
   const { id } = Route.useParams()
@@ -82,13 +85,29 @@ function RouteComponent() {
   }
 
   const handelUpload = async () => {
-
+    let url = '/product/addMedia/' + id;
+    let data: any = { media: uploadMedia }
+    if (selected != -1) {
+      url = '/product/' + id + '/media/update'
+      data.index = selected
+    }
     setIsLoading(true)
-    await axios.post('/product/addMedia/' + id, { media: uploadMedia }, {
+    await axios.post(url, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const percent = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          )
+          setUploadProgress(percent)
+        }
+      },
       _showAllMessages: true
+    }).finally(() => {
+      setUploadProgress(0)
+
     })
       .then(res => {
         if (res.data.status != 'success') return
@@ -101,9 +120,11 @@ function RouteComponent() {
       });
 
 
+
+
     setIsLoading(false)
   }
-  return <><div className=' w-max1200 flex flex-col px-6 pt-10 mx-auto'>
+  return <><div className=' w-max1200 flex flex-col px-6 pt-10 mx-auto pb-30'>
     <div className=' w-full flex items-start justify-start'>
       <Dropdown
         options={[
@@ -113,17 +134,20 @@ function RouteComponent() {
         mainIcon={<BlueButton label=' Add ' >
 
         </BlueButton>}
-        onAction={(emit) => emit == 'addImage' ? setIsOpen(true) : emit == 'addVideo' ? setIsOpenVideo(true) : ''}
+        onAction={(emit) => { setSeleted(-1); emit == 'addImage' ? setIsOpen(true) : emit == 'addVideo' ? setIsOpenVideo(true) : '' }}
       />
     </div>
     <div className=' w-full   grid grid-cols-4 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-6 mt-4'>
       {
         data.map((item: { [key: string]: string }, index: number) => {
-          return <div key={index} className=' flex relative theme1cont justify-center items-center p-1 not-dark:border-neutral-400 not-dark:border flex-col'>
+          return <div key={item.url} className=' flex relative theme1cont justify-center items-center p-1 not-dark:border-neutral-400 not-dark:border flex-col'>
             {item.type == 'image' ? <>  <img alt='' className=' max-w-full max-h-full my-auto' src={getImageUrl(item.url)} />
             </> : <video className=' max-w-full max-h-full my-auto' controls src={getImageUrl(item.url)} />}
             <div className=' w-full mt-auto flex justify-end items-center'>
               <ToolTip className=' flex items-center justify-center' TooltipContent="Delete">
+                <button onClick={() => { setSeleted(index); item.type == 'image' || index == 0 ? setIsOpen(true) : setIsOpenVideo(true) }} className=' flex justify-center items-center w-11 h-11 p-1 rounded-full ha'>
+                  <Pencil />
+                </button>
                 <button onClick={() => { setSeleted(index), setshowConf(true) }} className=' flex justify-center items-center w-11 h-11 p-1 rounded-full ha'>
                   <Trash2 />
                 </button>
@@ -140,6 +164,11 @@ function RouteComponent() {
     </FullscreenOverlay>
     <FullscreenOverlay className=' bg-black p-3 theme1cont w-max1000' isOpen={isOpenVideo} onClose={() => setIsOpenVideo(false)}>
       <VideoPicker onSelect={e => handelVideoUpload(e)} />
+    </FullscreenOverlay>
+    <FullscreenOverlay className=' bg-black p-3 theme1cont w-max1000' isOpen={uploadProgress != null && uploadProgress != 0} onClose={() => { }}>
+      <div className=' w-full flex items-start justify-start h-6'>
+        <div className=' bg-blue w-[20%] h-full rounded-3xl' style={{ width: `${uploadProgress}%` }}></div>
+      </div>
     </FullscreenOverlay>
     <ConfirmCOmponent onOk={handelDelete} isOpen={showConf} onClose={() => setshowConf(false)} cancel={() => setshowConf(false)} >
 

@@ -25,11 +25,17 @@ type Product = {
 };
 
 
-export default function ProductDetails({ product, className }: { className?: string, product: Product }) {
+export default function ProductDetails({ onSetIsopen, product, className }: { onSetIsopen: (i:any) => void, className?: string, product: Product }) {
   const { settings } = useSettingsStore()
 
   const [isLoading, setIsloading] = useState(false)
   const handleAddToCart = async (e) => {
+    e.preventDefault()
+    if (settings.allow_checkout != 1) {
+      // window.alert(0)
+      onSetIsopen(quantity)
+      return
+    }
     e.preventDefault()
     setIsloading(true)
     await axios.post('/cart/add-item', [{ product_id: product.id, quantity }], { _showAllMessages: true }).then(res => {
@@ -47,7 +53,7 @@ export default function ProductDetails({ product, className }: { className?: str
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className={"w-max600 flex flex-col-reverse sm:flex-row-reverse items-center gap-x-10  justify-center sm:justify-between  relative sm:gap-y-4 gap-y-10" + className}>
+    <div key={settings.allow_checkout} className={"w-max600 flex flex-col-reverse sm:flex-row-reverse items-center gap-x-10  justify-center sm:justify-between  relative sm:gap-y-4 gap-y-10" + className}>
       <div className="sm:w-[46%] w-full flex flex-col sm:justify-center sm:items-start h-full sm:gap-y-10 gap-y-5 sm:text-start">
         {product.new && (
           <h2 className="text-[14px] w-full leading-none mb-5 sm:w-[max(379px)] text-orange font-stretch-100%">
@@ -87,7 +93,6 @@ export default function ProductDetails({ product, className }: { className?: str
       {/* <img alt="image"
         className=" rounded-[8px]"
         src={product.image}
-      /> */}
       {/* <SwiperList className={" w-full sm:w-[50%] h-70"} media={product.media} /> */}
       {product.media.length > 0 ? <SwiperList2 className={" w-full sm:w-[50%] h-100"} media={product.media} /> : <ImageIcon className={" w-full sm:w-[50%] h-100"} />}
 

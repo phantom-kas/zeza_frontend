@@ -8,6 +8,7 @@ interface User {
   id: string;
   name: string;
   image: string,
+  role:'admin'|'user'|'super_admin'
   email: string
 }
 
@@ -17,7 +18,7 @@ interface AuthState {
   login: (credentials: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   setToken: (token: string | null) => void;
-  setUser: (user: User) => void
+  setUser: (user: User|null) => void
 }
 
 

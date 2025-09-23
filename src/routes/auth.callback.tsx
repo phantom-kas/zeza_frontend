@@ -15,12 +15,12 @@ function RouteComponent() {
     const search = Route.useSearch()
 
     useEffect(() => {
-        const { tkn } = search
+        // const { tkn } = search
 
-        if (tkn) {
+        // if (tkn) {
 
-            document.cookie = `refresh_token=${tkn}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=None; Secure`
-        }
+        //     document.cookie = `refresh_token=${tkn}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=None; Secure`
+        // }
 
         axios.get('/me').then(res => {
             if (res.data.status != 'success') return;

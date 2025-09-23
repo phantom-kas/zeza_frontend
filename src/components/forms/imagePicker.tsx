@@ -8,6 +8,11 @@ type Props = {
   index?: number | null;
   onCrop?: (data: { img: Blob; index?: number | null }) => void;
   onRemove?: (data: { index?: number | null }) => void;
+  size?: {
+    width: number,
+    height: number,
+  }
+  quality?: number
 };
 
 export const ImageCropper: React.FC<Props> = ({
@@ -17,6 +22,8 @@ export const ImageCropper: React.FC<Props> = ({
   index = null,
   onCrop,
   onRemove,
+  size = undefined,
+  quality = undefined
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const selectionRef = useRef<any>(null); // holds <cropper-selection> once created
@@ -118,8 +125,8 @@ export const ImageCropper: React.FC<Props> = ({
 
       // Resize handles
       const handles = [
-        'sw-resize','se-resize','ne-resize','nw-resize',
-        'e-resize','w-resize','s-resize','n-resize',
+        'sw-resize', 'se-resize', 'ne-resize', 'nw-resize',
+        'e-resize', 'w-resize', 's-resize', 'n-resize',
       ].map(action => {
         const h = document.createElement('cropper-handle');
         h.setAttribute('action', action);
@@ -160,15 +167,15 @@ export const ImageCropper: React.FC<Props> = ({
 
   const handleCrop = async () => {
     if (!selectionRef.current) return;
-    const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas();
+    const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas(size);
     canvas.toBlob((blob) => {
       if (blob && onCrop) onCrop({ img: blob, index });
-    }, 'image/png');
+    }, 'image/png', quality);
   };
 
   const handlePreview = async () => {
     if (!selectionRef.current) return;
-    const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas();
+    const canvas: HTMLCanvasElement = await selectionRef.current.$toCanvas(size);
     setFinalImg(canvas.toDataURL('image/png'));
     setPreviewOpen(true);
   };
@@ -238,7 +245,7 @@ export const ImageCropper: React.FC<Props> = ({
           >
             <div className="flex justify-end mb-4">
               <button name='cloes' type='button' className="text-red-500 text-2xl" onClick={() => setPreviewOpen(false)}>
-                <X/>
+                <X />
               </button>
             </div>
             <div className="flex justify-center items-center pt-4 pb-2">

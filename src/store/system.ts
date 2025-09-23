@@ -15,6 +15,7 @@ type ss = {
 };
 
 export const useSettingsStore = create<ss>((set) => ({
-  settings: {allow_checkout:1},
+  settings: {
+    allow_checkout:undefined},
   setSettings: (settings: any) => set({ settings }),
 }));
