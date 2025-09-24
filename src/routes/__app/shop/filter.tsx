@@ -1,12 +1,17 @@
 import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
 import Checkbox from '../../../components/forms/checkbox'
 import { memo, useEffect, useState } from 'react'
-import { ChevronDown, ChevronDownIcon, ChevronUpIcon, UserSearch } from 'lucide-react'
+import { ChevronDown, ChevronDownIcon, ChevronUpIcon, Share2Icon, UserSearch } from 'lucide-react'
 import { Dropdown } from '../../../components/dopDown'
 import ValidatedInput from '../../../components/forms/input'
 import { BlueButton } from '../../../components/ButtonBlue'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import { useThemeStore } from '../../../store/themestore'
+import ToolTip from '../../../components/toolTip'
+import { apiBase } from '../../../composabels/utils'
 
 interface filters {
   brand?: string[],
@@ -26,12 +31,19 @@ export const Route = createFileRoute("/__app/shop/filter")({
 
 
 function Filters() {
+
+  const { isDark } = useThemeStore()
   const [brandsState, setBrandsState] = useState([])
   const [showbrandsState, setShowbrandsState] = useState(true)
   const [showCategories, setShowCategories] = useState(true)
   const [loadstate, setloadstate] = useState(true)
-
   const search = useSearch({ from: '/__app/shop/filter' })
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    Number(search["min"]) || 0,
+    Number(search["max"]) || 99999,
+  ]);
+
+
   const navigate = useNavigate({ from: Route.fullPath })
 
   useEffect(() => {
@@ -75,6 +87,22 @@ function Filters() {
   }
 
 
+  const handelShare =async (e:any) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title:e.lable,
+          text:e.lable,
+          url:apiBase+'/category/'+e.label+'-'+e.value,
+        });
+        console.log("Shared successfully");
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      alert("Sharing not supported on this browser");
+    }
+  }
   return (
     <div id='filtermenu' className=" sm:w-max200 w-full  sm:sticky sm:top-15 flex flex-col justify-start z-90 not-dark:bg-white dark:bg-black pb-20 sm:pb-0">
       <Dropdown
@@ -92,7 +120,15 @@ function Filters() {
       <div className=' w-full' >
         <button onClick={() => setShowCategories(!showCategories)} className='flex  justify-between items-center w-full py-2 text-lg font-[600]'>Product Categories <button title='s' type='button' className=' btnicon1 ha'>{showCategories ? <ChevronDownIcon size={19} /> : <ChevronUpIcon size={19} />}</button></button>
         <div className={`flex flex-col ${!showCategories && ' hidden'}`}>
-          {categoryQuery.data && categoryQuery.data.map((e: any) => <Link className=' px-2 ha cursor-pointer rounded-xs' activeProps={{ className: 'theme2cont' }} search={{ ...search, category: e.label }}>{e.label}</Link>)}
+          {categoryQuery.data && categoryQuery.data.map((e: any) => <Link className='w-full flex justify-between px-2 ha cursor-pointer rounded-xs' activeProps={{ className: 'theme2cont' }} search={{ ...search, category: e.label }}>
+            {e.label}
+            <Dropdown
+              options={[
+                { label: "Share",  search: { ...search, sort: "price-asc" }, emit: "share", icon: <Share2Icon /> },
+              ]}
+              onAction={(emit) => handelShare(e)}
+            />
+          </Link>)}
         </div>
       </div>
       <div className=' w-full border-b not-dark:border-neutral-200 dark:border-neutral-700  my-6'></div>
@@ -114,6 +150,34 @@ function Filters() {
       {/* <ValidatedInput type='number' name={'amt'} label='Price' /> */}
       {/* {...brandsState} */}
 
+      <div className=' flex justify-between items-end mb-2'>
+        <h1 className=' text-xl'>Price</h1>
+        <Link search={{ ...search, min: String(priceRange[0]), max: String(priceRange[1]), }}>
+          <BlueButton className=' ' label='Apply' />
+        </Link>
+      </div>
+      <Slider
+        styles={{
+          track: {
+            backgroundColor: isDark() ? '#155dfc' : "#3b82f6", // Tailwind blue-500
+            // height: 8,
+          },
+          rail: {
+            backgroundColor: isDark() ? 'gray' : '#d1d5db',
+          },
+          handle: {
+            borderColor: "#3b82f6",
+            backgroundColor: isDark() ? 'black' : 'white',
+          },
+        }}
+        max={99999}
+        defaultValue={priceRange}
+        onChange={(val) => setPriceRange(val as [number, number])}
+        className='' range />
+      <div className=" flex-start flex text-sm items-center">
+        <span className='  text-xs'>Selected range:</span> <span className=" ml-2 text-blue-600 font-semibold">{priceRange[0]}</span> –{" "}
+        <span className="text-blue-600 font-semibold">{priceRange[1]}</span>
+      </div>
 
       <BlueButton
         onClick={() => navigate({ search: {} })}

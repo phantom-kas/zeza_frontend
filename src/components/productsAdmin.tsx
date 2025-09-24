@@ -35,7 +35,7 @@ export const ProduCardAdmin = ({ onRestore = () => { }, featuredId = undefined, 
     </div>
     <div className=" text-xs  items-center justify-start flex w-full">{created_at}</div>
 
-    <div className="flex justify-end gap-3 w-full">
+    <div className="flex justify-end gap-3 w-full flex-wrap">
 
       {featuredId ? <ToolTip onClick={(e) => handleOverlayClick(e, () => onRemoveFromFeatured(id))} className={"flex justify-center items-center p-2 theme1cont not-dark:bg-white  "} TooltipContent={'Add to featured'}>
         <StarIcon className="fill-yellow-500 stroke-yellow-500" size={17} />

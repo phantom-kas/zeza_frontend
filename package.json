@@ -24,6 +24,7 @@
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.541.0",
     "quill": "^2.0.3",
+    "rc-slider": "^11.1.9",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "swiper": "^11.2.10",

@@ -31,8 +31,8 @@ function RouteComponent() {
     const [he2, sethe2] = useState('')
 
 
-      const {setSettings} = useSettingsStore()
-    
+    const { setSettings } = useSettingsStore()
+
 
 
     const { data, error, isPending } = useQuery({
@@ -108,13 +108,13 @@ function RouteComponent() {
     const handleSubmitAc = async (e) => {
 
         setLoadingASC(true)
-      
-        setASC(e?1:0 )
-        await axios.patch('/settings/ac', { ac:aSC }, { _showAllMessages: true }).then(res => {
+        let ac = { ac: 0 }
+        e ? ac.ac = 1 : ac.ac = 0
+        await axios.patch('/settings/ac', ac, { _showAllMessages: true }).then(res => {
             if (res.data.status != 'success') return
             queryClient.setQueryData(['settings'], (oldData: any) => {
                 if (!oldData) return oldData
-                return { ...oldData, allow_checkout: e?1:0 }
+                return { ...oldData, allow_checkout: ac.ac == 1 ? 1 : 0 }
             })
         }).catch(() => { })
         setLoadingASC(false)
@@ -122,6 +122,7 @@ function RouteComponent() {
 
     return data && <div className=" w-max700  mx-auto flex flex-col items-start justify-start gap-10 py-20 px-4">
         <h1 className='h1'>Settings</h1>
+        {/* {data.allow_checkout} */}
         <Switch label='Allow Self Checkout' onChange={handleSubmitAc} checked={data.allow_checkout == 1} />
         <form onSubmit={handleSubmitMe} className='flex gap-3 w-full flex-wrap items-end justify-start'>
             <InputField onInput={(e) => setMe(e.value)} val={data.alt_checkout_link} className=' w-max500' name={'wa'} label='Wa.Me link' icon={<LinkIcon />} />
@@ -142,7 +143,7 @@ function RouteComponent() {
         </form>
 
         <h1 className='h1 mt-6'>Home Page Images</h1>
-        
-        <Media/>
+
+        <Media />
     </div>
 }

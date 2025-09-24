@@ -8,7 +8,7 @@ import { Link } from "@tanstack/react-router"
 import InfiniteLoad from '../../components/list/infiniteLoad'
 interface filters {
   brand?: string[],
-  category?: string | undefined,
+  category?: string | undefined | string[],
   sort?: string | undefined,
   min?: number,
   max?: number,
@@ -19,11 +19,14 @@ export const Route = createFileRoute('/__app/shop')({
 
 })
 
+
+
+
 function RouteComponent() {
   const search = useSearch({ from: "/__app/shop" })
 
   return <>
-    <PageTitle />
+    <PageTitle title1={!Array.isArray(search.category) ? search.category : undefined} />
     <section className=' flex gap-3 w-max1200 py-20 mx-auto px-6 relative justify-between items-start flex-col sm:flex-row'  >
 
       <Link to='/shop/filter' activeOptions={{}} activeProps={{
@@ -53,6 +56,7 @@ function RouteComponent() {
 const Filters = () => {
   const router = useRouter()
   const search = useSearch({ from: "/__app/shop" })
+  
   const { brand = [], category, sort } = search
   const activeBrands = Array.isArray(brand) ? brand : [brand].filter(Boolean)
   const activeFilters: string[] = [
@@ -61,14 +65,19 @@ const Filters = () => {
     sort ? `Sort: ${sort}` : "",
   ].filter(Boolean)
 
-  const removeFilter = (filterType: keyof filters, value?: string) => {
+  const removeFilter = (filterType: keyof filters | 'categories', value?: string) => {
     const newSearch = { ...search }
 
     if (filterType === "brand" && value) {
       const updatedBrands = activeBrands.filter((b) => b !== value)
       newSearch.brand = updatedBrands.length > 0 ? updatedBrands : undefined
-    } else {
-      newSearch[filterType] = undefined
+    }
+    else if (filterType === "categories" && value) {
+      const categories = activeBrands.filter((b) => b !== value)
+      newSearch.category = categories.length > 0 ? categories : undefined
+    }
+    else {
+      newSearch[filterType as keyof filters] = undefined
     }
 
     router.navigate({
@@ -76,7 +85,7 @@ const Filters = () => {
     })
   }
 
-  const hasFilters =  activeBrands.length > 0 || Boolean(category) || Boolean(sort)
+  const hasFilters = activeBrands.length > 0 || Boolean(category) || Boolean(sort)
 
   if (!hasFilters) return null
   return (
@@ -98,7 +107,7 @@ const Filters = () => {
           </li>
         ))}
 
-        {category && (
+        {(category && !Array.isArray(category)) && (
           <li className="px-3 py-1 theme2cont rounded-full text-sm flex items-center gap-1">
             Category: {category}
             <button
@@ -109,6 +118,23 @@ const Filters = () => {
             </button>
           </li>
         )}
+
+
+        {Array.isArray(category) && category.map((c) => (
+          <li
+            key={c}
+            className="px-3 py-1 theme2cont rounded-full text-sm flex items-center gap-1"
+          >
+            Category: {c}
+            <button
+              className="text-red-500"
+              onClick={() => removeFilter("categories", c)}
+            >
+              ✕
+            </button>
+          </li>
+        ))}
+
 
         {sort && (
           <li className="px-3 py-1 theme2cont rounded-full text-sm flex items-center gap-1">

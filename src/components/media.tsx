@@ -77,7 +77,7 @@ export default () => {
     }
 
     const handelUpload = async () => {
-        let url = '/media/add/';
+        let url = '/media/add';
         let data: any = { media: uploadMedia }
         if (selected != -1) {
             url = '/media/update'

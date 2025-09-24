@@ -28,6 +28,7 @@ import { Route as _appLogoutRouteImport } from './routes/__app/logout'
 import { Route as _appFeaturedRouteImport } from './routes/__app/featured'
 import { Route as _appCartRouteImport } from './routes/__app/cart'
 import { Route as _appAboutRouteImport } from './routes/__app/about'
+import { Route as _appFavoriteRouteImport } from './routes/__app/Favorite'
 import { Route as _appProductsIndexRouteImport } from './routes/__app/products/index'
 import { Route as _appManageProductsIndexRouteImport } from './routes/__app/manage-products/index'
 import { Route as _appManageCategoriesIndexRouteImport } from './routes/__app/manage-categories/index'
@@ -140,6 +141,11 @@ const _appAboutRoute = _appAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => _appRoute,
 } as any)
+const _appFavoriteRoute = _appFavoriteRouteImport.update({
+  id: '/Favorite',
+  path: '/Favorite',
+  getParentRoute: () => _appRoute,
+} as any)
 const _appProductsIndexRoute = _appProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -234,6 +240,7 @@ const _appManageBrandsIdEditRoute = _appManageBrandsIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/Favorite': typeof _appFavoriteRoute
   '/about': typeof _appAboutRoute
   '/cart': typeof _appCartRoute
   '/featured': typeof _appFeaturedRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/Favorite': typeof _appFavoriteRoute
   '/about': typeof _appAboutRoute
   '/cart': typeof _appCartRoute
   '/featured': typeof _appFeaturedRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/__app': typeof _appRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/__app/Favorite': typeof _appFavoriteRoute
   '/__app/about': typeof _appAboutRoute
   '/__app/cart': typeof _appCartRoute
   '/__app/featured': typeof _appFeaturedRoute
@@ -346,6 +355,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/login'
     | '/signup'
+    | '/Favorite'
     | '/about'
     | '/cart'
     | '/featured'
@@ -383,6 +393,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/signup'
+    | '/Favorite'
     | '/about'
     | '/cart'
     | '/featured'
@@ -418,6 +429,7 @@ export interface FileRouteTypes {
     | '/__app'
     | '/login'
     | '/signup'
+    | '/__app/Favorite'
     | '/__app/about'
     | '/__app/cart'
     | '/__app/featured'
@@ -593,6 +605,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof _appAboutRouteImport
+      parentRoute: typeof _appRoute
+    }
+    '/__app/Favorite': {
+      id: '/__app/Favorite'
+      path: '/Favorite'
+      fullPath: '/Favorite'
+      preLoaderRoute: typeof _appFavoriteRouteImport
       parentRoute: typeof _appRoute
     }
     '/__app/products/': {
@@ -791,6 +810,7 @@ const _appProductIdRouteWithChildren = _appProductIdRoute._addFileChildren(
 )
 
 interface _appRouteChildren {
+  _appFavoriteRoute: typeof _appFavoriteRoute
   _appAboutRoute: typeof _appAboutRoute
   _appCartRoute: typeof _appCartRoute
   _appFeaturedRoute: typeof _appFeaturedRoute
@@ -813,6 +833,7 @@ interface _appRouteChildren {
 }
 
 const _appRouteChildren: _appRouteChildren = {
+  _appFavoriteRoute: _appFavoriteRoute,
   _appAboutRoute: _appAboutRoute,
   _appCartRoute: _appCartRoute,
   _appFeaturedRoute: _appFeaturedRoute,

@@ -101,6 +101,7 @@ const TopNav = () => {
       <div className={`' flex lg:items-center lg:justify-start gap-x-1 lg:flex-row flex-col items-start justify-start px-2 lg:px-0 max-lg:w-full lg:mt-0 mt-3 ${open ? 'flex ' : ' max-lg:hidden'}`}>
         <NavItem to="/" label="Home" icon={<HomeIcon size={16} />} />
         <NavItem to="/shop" label="Shop" icon={<Store size={16} />} />
+        <NavItem to="/favorite" label="Favorite" icon={<Heart size={16} />} />
         {!(!token || !user) && <> <NavItem className='relative ' to="/cart" label={itemsCount > 0 ? <> Cart <div className='flex justify-center items-center w-5 h-5 rounded-2xl absolute text-[11px] font-[600]  left-0 top-[0px] text-xs bg-amber-700 text-white'> {itemsCount}</div></> : 'Cart'} icon={<ShoppingCart size={16} />} />
           {/* <NavItem to="/" label="Favourite" icon={<Heart size={16} />} /> */}
 

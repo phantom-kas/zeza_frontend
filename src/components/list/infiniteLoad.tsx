@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "../../lib/axios"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import Compnent from '../compnent'
 import { Dropdown } from "../dopDown";
 import { LucideLoaderCircle, Pencil, Trash2 } from "lucide-react";
@@ -20,7 +20,7 @@ type ListProps = {
   dropDownOptions?: { [key: string]: unknown }[]
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export default ({ className, showLoadMore = true, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = undefined }: ListProps) => {
+export default ({ className, showLoadMore = true, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = 20 }: ListProps) => {
   const fetchProjects = async ({ pageParam }: { pageParam: number | string }) => {
     const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params, ...query } })
     console.log(res.data.data)
@@ -46,6 +46,27 @@ export default ({ className, showLoadMore = true, query, dropDownOptions, Header
   console.log(data)
 
   const isTable = is == 'table'
+  const loadMoreRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 1.0 }
+    )
+
+    const node = loadMoreRef.current
+    if (node) observer.observe(node)
+
+    return () => {
+      if (node) observer.unobserve(node)
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
   return status === 'pending' ? (
     <p>Loading...</p>
   ) : status === 'error' ? (
@@ -89,7 +110,7 @@ export default ({ className, showLoadMore = true, query, dropDownOptions, Header
               : 'Nothing more to load'}
         </button>}
       </div>
-      <div className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}</div>
+      <div ref={loadMoreRef} className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}</div>
     </>
   )
 }
