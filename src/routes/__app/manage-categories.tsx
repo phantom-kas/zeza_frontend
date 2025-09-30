@@ -6,7 +6,7 @@ export const Route = createFileRoute('/__app/manage-categories')({
 })
 
 function RouteComponent() {
-  return <div className='w-full flex flex-col items-center px-6'>
+  return <div className='w-full flex flex-col items-center px-6 pt-10'>
     <div className="w-max1200">
       <HorizontalNav navList={[
         { to: '/manage-categories/', label: 'Categories' },

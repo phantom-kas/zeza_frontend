@@ -160,24 +160,28 @@
 
 
 
-.blurbg {
+.blurbg,.blurbg2 {
   content: "";
   top: 0;
   left: 0;
   /* position: absolute;
   z-index: -1; */
-  background: hsla(0, 0%, 100%, 0.562);
-
   transition: opacity .3s ease-out;
   visibility: visible;
   /* opacity: 1; */
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
+.blurbg{
+  background: hsla(0, 0%, 100%, 0.279);
 
+}
+.blurbg2{
+  background: hsla(0, 0%, 100%, 0.447);
+}
 
-.dark .blurbg {
-  background: hsla(0, 0%, 9%, 0.61);
+.dark .blurbg,.dark .blurbg2 {
+  background: hsla(0, 0%, 9%, 0.259);
 }
 
 .gradiant-text {

@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Don't rewrite requests for existing files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Don't rewrite /assets (let Apache serve JS/CSS/images)
+  RewriteCond %{REQUEST_URI} ^/assets/
+  RewriteRule ^ - [L]
+
+  # Route everything else to index.html (for SPA routing)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Ensure correct MIME types
+AddType application/javascript .js
+AddType application/javascript .mjs

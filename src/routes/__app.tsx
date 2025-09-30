@@ -87,7 +87,7 @@ const TopNav = () => {
 
   const [open, setOpen] = useState(false);
   console.log(Route)
-  return <> <nav className={` top-0 shadow-sm flex items-center justify-center  dark:bg-neutral-950 dark:text-white   z-100 bg-white fixed lg:w-full w-max300 ${open ? ' ' : ' max-lg:w-full '}`} >
+  return <> <nav className={` top-0 shadow-sm flex items-center justify-center   dark:text-white   z-100 blurbg2 fixed lg:w-full w-max300 ${open ? ' ' : ' max-lg:w-full '}`} >
     <div className={`w-max1200 lg:px-6 z-100  flex lg:items-center lg:justify-between mx-auto lg:h-12  lg:flex-row flex-col items-start justify-start ${open ? ' max-lg:h-dvh ' : ' h-12'}`}>
       <div className={` flex gap-1 items-center px-4 lg:px-0  `}>
         <button onClick={() => setOpen(!open)} title='Toggle Menu' type="button" className=" p-2 rounded-full lg:hidden">

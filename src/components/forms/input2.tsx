@@ -68,7 +68,7 @@ export default function InputField({
   };
 
   return (
-    <div className={"relative theme1cont flex items-center pl-2 gap-x-3 not-dark:bg-[#F5F5F5]! " + className}>
+    <div className={"relative theme2cont flex items-center pl-2 gap-x-3  " + className}>
       {icon ? (
         icon
       ) : (
@@ -91,7 +91,7 @@ export default function InputField({
       {type === "password" && (
         <div
           onClick={() => setPassVisible((p) => !p)}
-          className="absolute right-2 cursor-pointer z-50 flex items-center justify-center theme2cont"
+          className="absolute right-2 cursor-pointer z-50 flex items-center justify-center"
         >
           {passVisible ? (
             <EyeOff className="text-gray-500" size={18} />
@@ -104,7 +104,7 @@ export default function InputField({
       <label
         htmlFor={`floating_${name}`}
         className="absolute left-11 top-0 pointer-events-none text-sm transition-all 
-        peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+        peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-700 dark:peer-placeholder-shown:text-gray-400 
         peer-focus:-top-1 peer-focus:text-sm peer-focus:text-blue-500"
         dangerouslySetInnerHTML={{ __html: label }}
       />

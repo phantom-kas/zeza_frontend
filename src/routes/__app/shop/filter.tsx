@@ -243,3 +243,4 @@ export default function BrandFilter({ brands, onChange, className }: FilterProps
 }
 
 // const MemoCheckbox = memo(Checkbox)
+

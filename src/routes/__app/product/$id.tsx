@@ -7,6 +7,7 @@ import { useState } from 'react'
 import CloseRow from '../../../components/closeRow'
 import PurchaseForm from '../../../components/forms/purchaseForm'
 import { useProductsPageStore } from '../../../store/productsPage'
+import LoaderP from '../../../components/placeHoderProduct'
 
 export const Route = createFileRoute('/__app/product/$id')({
   component: RouteComponent,
@@ -37,8 +38,13 @@ function RouteComponent() {
   })
 
 
-  if (isPending) { return 'loading' }
+  if (isPending) {
+    return <div className='w-max1200 mx-auto py-20'>
+      <LoaderP />
+    </div>
+  }
 
+ 
   // if (!data) return
 
   return <div className='  w-max1200 mx-auto py-20 flex flex-col lg:flex-row px-6 min-h-dvh gap-x-10 items-start relative gap-y-10'>
@@ -89,7 +95,7 @@ function RouteComponent() {
       {/* <div className=' mx-auto  p-4 w-max500 '> */}
       <div className='flex flex-col gap-4 '>
         <CloseRow onclick={() => setIsOpen(false)} />
-        <PurchaseForm  msg={'I would like to purchase ' + quantity + ' unit' + (quantity == 1 ? '' : 's ') + ' of this product.'} onClose={() => setIsOpen(false)} product={id} quantity={quantity} />
+        <PurchaseForm msg={'I would like to purchase ' + quantity + ' unit' + (quantity == 1 ? '' : 's ') + ' of this product.'} onClose={() => setIsOpen(false)} product={id} quantity={quantity} />
       </div>
       {/* </div> */}
     </FullscreenOverlay>

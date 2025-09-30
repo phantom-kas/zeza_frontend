@@ -2,12 +2,13 @@ import { LucideLockKeyhole, MailIcon } from "lucide-react"
 import { BlueButton } from "../ButtonBlue"
 import InputField from "../forms/input2"
 import Base from "./base"
-import { Link, useRouterState } from "@tanstack/react-router"
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router"
 import AltAuth from "./altAuth"
 import { useState } from "react"
 import { useAuthStore } from "../../store/auth"
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
+  
   const [form, setForm] = useState({ password: '', email: '' })
   const [loading, setLoading] = useState(false)
   const user = useAuthStore()
@@ -29,12 +30,12 @@ export default () => {
     >
 
       <div className=" w-full text-center">
-        Don't have an account? <Link to={routerState.location.pathname + "?modal=signup"} className="hover:underline text-blue">Sign up</Link>
+        Don't have an account? <Link to={routerState.location.pathname + "?modal=signup"} className="hover:underline text-blue-400 dark:text-blue">Sign up</Link>
       </div>
       <InputField onInput={(e) => { handleChange(e) }} icon={<MailIcon />} name={"email"} label="Email" type="email" />
       <InputField onInput={(e) => { handleChange(e) }} icon={<LucideLockKeyhole />} name={"password"} label="Password" type="password" />
       <div className=" w-full flex justify-end">
-        <Link to={routerState.location.pathname + "?modal=forgot-password"} className=" hover:underline text-blue font-[500] text-lg">Forgot Password</Link>
+        <Link to={routerState.location.pathname + "?modal=forgot-password"} className=" hover:underline text-blue-400 dark:text-blue font-[500] text-lg">Forgot Password</Link>
       </div>
       <BlueButton loading={loading} label="Submit" />
       <AltAuth />

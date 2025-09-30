@@ -14,13 +14,15 @@ type ListProps = {
   is?: React.ElementType,
   url: string,
   perpage?: number,
+  onAction?: (emit: string) => void;
+
   params?: { [key: string]: string | number },
   query?: { [key: string]: any },
   renderItem?: <T>(item: T, index: number) => React.ReactNode;
-  dropDownOptions?: { [key: string]: unknown }[]
+  dropDownOptions?: { [key: string]: any }[]
 };
 // eslint-disable-next-line react-refresh/only-export-components
-export default ({ className, showLoadMore = true, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = 20 }: ListProps) => {
+export default ({onAction=()=>{}, className, showLoadMore = true, query, dropDownOptions, Headeritems, renderItem, url, qKey, params, is = 'table', perpage = 20 }: ListProps) => {
   const fetchProjects = async ({ pageParam }: { pageParam: number | string }) => {
     const res = await axios.get(url, { params: { cursor: pageParam, perpage, ...params, ...query } })
     console.log(res.data.data)
@@ -28,7 +30,7 @@ export default ({ className, showLoadMore = true, query, dropDownOptions, Header
   }
 
   const effectiveRenderItem = renderItem ? renderItem
-    : (item: any, index: number) => defaultRenderItem(item, index, Headeritems, dropDownOptions)
+    : (item: any, index: number) => defaultRenderItem(item, index, Headeritems, dropDownOptions,onAction)
   const {
     data,
     error,
@@ -110,7 +112,11 @@ export default ({ className, showLoadMore = true, query, dropDownOptions, Header
               : 'Nothing more to load'}
         </button>}
       </div>
-      <div ref={loadMoreRef} className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}</div>
+      {showLoadMore ? <div ref={loadMoreRef} className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}
+      </div> : <div className="w-full flex items-center justify-center opacity-75">{(isFetching || isFetchingNextPage) && <LucideLoaderCircle className="animate-spin" size={28} />}
+      </div>
+
+      }
     </>
   )
 }
@@ -120,14 +126,15 @@ const defaultRenderItem = (
   item: any,
   index: number,
   Headeritems?: { titleLabel: string, valueKey: string }[],
-  dropDownOptions?: []
+  dropDownOptions?: any[],
+  onAction:(emit: string,param:any) => void = ()=>{}
 ) => (
   <tr key={index} className=" border-b  dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-neutral-950 cursor-context-menu">
     {Headeritems?.map((col, i) => (
       <td key={i} className=" p-4">{item[col.valueKey] ?? ""}</td>
     ))}
     {dropDownOptions &&
-      <td className=" w-4"><Dropdown dropClasses=" theme1cont" options={dropDownOptions} /></td>
+      <td className=" w-4"><Dropdown onAction={e=>onAction(e,item)} dropClasses=" theme1cont" options={dropDownOptions} /></td>
     }
   </tr>
 )

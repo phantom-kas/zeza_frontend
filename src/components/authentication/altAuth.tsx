@@ -41,7 +41,7 @@ export default () => {
             fill="#1976D2" />
         </svg>
       </div>
-        <h1 className="px-4 py-3 w-5/6 text-center  font-bold ">Continue with Google</h1></>
+        <h1 className="px-4 py-3 w-5/6 text-center  font-bold text-blue-400 dark:text-blue">Continue with Google</h1></>
         : <Loader className="animate-spin w-6 h-12 mx-auto " />
       }
     </button >

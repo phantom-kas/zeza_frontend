@@ -14,7 +14,7 @@ export default ({ children = <span></span>,title='' }: {title:string, children: 
   }
   return <>
     <div className=" w-dvw h-dvh flex flex-start top-0 fixed justify-center z-[99999]">
-      <FullscreenOverlay onClose={() => goBack()} isOpen={true} className=" flex flex-col dark:bg-black gap-y-4 rounded-2xl theme1cont w-max500 not-dark:bg-white relative dark:text-white2 p-3 "
+      <FullscreenOverlay onClose={() => goBack()} isOpen={true} className=" flex flex-col  gap-y-4 rounded-2xl theme1cont w-max500  relative dark:text-white2 p-3 blurbg "
       >
         <div className=" w-full flex justify-end">
           <button type="button" onClick={()=>goBack()} className=" rounded-full w-10 h-10 p-1 ha flex justify-center items-center">

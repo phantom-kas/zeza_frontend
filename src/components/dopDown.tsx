@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 interface Option {
   icon?: React.ReactNode;
   emit?: string;
+  param?:any;
   label: string;
   isLink?: boolean;
   link?: string;
@@ -15,7 +16,7 @@ interface Option {
 interface DropdownProps {
   options: Option[];
   mainIcon?: React.ReactNode;
-  onAction?: (emit: string) => void;
+  onAction?: (emit: string,param?:any) => void;
   dropClasses?: string,
   className?: string
 
@@ -112,7 +113,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ dropClasses, className, opti
               !op.hide && (
                 !op.isLink ? <button
                   key={i}
-                  onClick={() => op.emit && onAction?.(op.emit)}
+                  onClick={() => op.emit && onAction?.(op.emit , op.param ?? undefined)}
                   className="py-2 px-2 rounded-sm hover:bg-gray-200 dark:hover:bg-neutral-800 cursor-pointer w-[90%] gap-x-2 flex items-center"
                 >
                   {op.icon ? op.icon : ''}

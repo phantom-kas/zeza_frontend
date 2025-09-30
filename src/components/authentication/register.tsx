@@ -46,7 +46,7 @@ export default () => {
     <Base title="Register"
     >
       <div className=" w-full text-center">
-        Alreay have an account? <Link to={routerState.location.pathname + "?modal=login"} className="hover:underline text-blue">login in</Link>
+        Alreay have an account? <Link to={routerState.location.pathname + "?modal=login"} className="hover:underline text-blue-400 dark:text-blue">login in</Link>
       </div>
       <InputField required onInput={(e) => { handleChange(e) }} icon={<MailIcon />} name={"email"} label="Email" type="email" />
       <InputField required onInput={(e) => { handleChange(e) }} icon={<MailIcon />} name={"name"} label="Full Name" />

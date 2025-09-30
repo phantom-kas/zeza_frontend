@@ -29,7 +29,7 @@ export function isDev(): boolean {
   return process.env.NODE_ENV === "development"
 }
 
-export function safeSlugify(str: string, separator = ".") {
+export function safeSlugify(str: string, separator = "+") {
   return str
     .toLowerCase()
     .trim()
@@ -91,3 +91,21 @@ export function timeAgo(input: string | Date): string {
     ? `1 ${unit} ago`
     : `${value} ${unit}s ago`;
 }
+
+
+ export const handleShare = async (url, title, text) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text,
+          url,
+        });
+        console.log("Shared successfully");
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      alert("Sharing not supported on this browser");
+    }
+  };
